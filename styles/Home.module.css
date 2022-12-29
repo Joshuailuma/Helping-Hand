@@ -1,4 +1,51 @@
-.container {
+.card {
+  width: 300px;
+  height: 300px;
+  background: transparent;
+  margin: 12px;
+  border-radius: 10px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  box-shadow: 0px 20px 30px 3px rgba(0, 0, 0, 0.55);
+}
+
+.navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background-color: hsl(211, 75%, 47%);
+}
+
+.card_top {
+  width: 100%;
+  height: 80%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  -webkit-border-radius: 10px 0 0 10px;
+  -moz-border-radius: 10px 0 0 10px;
+  position: relative;
+  object-fit: none;
+}
+
+.card_bottom {
+  width: 100%;
+  background: #000000;
+  height: 20%;
+  text-align: center;
+  border-radius: 0 0px 0px 0;
+  -webkit-border-radius: 0 10px 10px 0;
+  -moz-border-radius: 0 10px 10px 0;
+}
+
+/* .container {
   padding: 0 2rem;
 }
 
@@ -126,4 +173,68 @@
   .logo img {
     filter: invert(1);
   }
+} */
+
+#body {
+  background-image: url("/bg-tablet-pattern.svg");
+  background-repeat: no-repeat;
+  background-size: 800px;
+  padding-top: 200px;
+  background-position: 90% -25%;
+}
+
+#cta {
+  background-image: url("/bg-simplify-section-desktop.svg");
+  background-repeat: no-repeat;
+}
+
+.hamburger {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.hamburgerTop,
+.hamburgerMiddle,
+.hamburgerBottom {
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: #000;
+  transform: rotate(0);
+  transition: all 0.5s;
+}
+
+.hamburgerMiddle {
+  transform: translateY(7px);
+}
+
+.hamburgerBottom {
+  transform: translateY(14px);
+}
+
+.open {
+  transform: rotate(90deg);
+  transform: translateY(0px);
+}
+
+.open .hamburgerTop {
+  transform: rotate(45deg) translateY(6px) translate(6px);
+}
+
+.open .hamburgerMiddle {
+  display: none;
+}
+
+.open .hamburgerBottom {
+  transform: rotate(-45deg) translateY(6px) translate(-6px);
+}
+.flex {
+  display: flex;
+}
+
+.hidden {
+  display: none;
 }

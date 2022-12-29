@@ -1,0 +1,33 @@
+const mongoose = require("mongoose");
+
+const FundProjectSchema = new mongoose.Schema({
+    title:{
+        type: String,
+        required: [true, 'Please add a title'],
+        trim: true,
+        maxlength: [40, "Title is too long"]
+    }, 
+    description:{
+        type: String,
+        required: [true, 'Please add a description'],
+        trim: true,
+        maxlength: [200, "Description is too long"]
+    }, 
+
+    imageUrl:{
+        type: String,
+        required: [true, 'No image Url found'],
+    },
+
+    address:{
+        type: String,
+        required: [true, 'No Address found'],
+    },
+
+    endTime:{
+        type: String,
+        required: [true, 'Must specify end time'],
+    },
+})
+
+module.exports = mongoose.models.FundProject || mongoose.model('FundProject', FundProjectSchema);
