@@ -5,6 +5,8 @@ import contractAbi from "../../../constants/abi.json"
 import { Card, Modal, Input, Typography } from "@web3uikit/core";
 import { useState } from "react";
 import { ethers } from "ethers";
+import Web3 from 'web3';
+
 
 
 const index = ({project}) => {
@@ -25,8 +27,9 @@ const index = ({project}) => {
       abi: contractAbi,
       contractAddress: helpingHandAddress, // specify the networkId
       functionName: "fund",
+      msgValue: amountToDonate,
       params: {receiver: data.address
-            },
+    },
     })
 
     const {fetch, error: transferError, isFetching: transferIsFEtching} = useWeb3Transfer({
@@ -39,6 +42,7 @@ const index = ({project}) => {
     const handleDonateClick = async()=>{
       setShowModal(true)
     }
+
     const donate =async()=>{
       console.log("Donate clicked");
       if(isWeb3Enabled){
@@ -101,7 +105,7 @@ const index = ({project}) => {
       <Input
       type="number"
       onChange={()=>{
-        setAmountToDonate(event.target.value)
+        setAmountToDonate(ethers.utils.parseEther(event.target.value))
       }}
         label="Amount to donate"
         width="100%"

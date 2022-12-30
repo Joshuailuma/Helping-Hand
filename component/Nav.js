@@ -95,6 +95,7 @@ let i = false
    
              {/* Menu Items */}
              <div className="hidden md:flex md:space-x-6">
+             <Link className='text-white	hover:text-darkGrayishBlue' href="/available_projects">Available Projects</Link>
             <Link className='text-white	hover:text-darkGrayishBlue' href="/about">About</Link>
             <ConnectButton/>
 
