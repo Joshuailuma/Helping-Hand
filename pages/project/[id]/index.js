@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useMoralis, useWeb3Contract, useWeb3Transfer } from "react-moralis"
 import contractAbi from "../../../constants/abi.json"
 import { Card, Modal, Input, Typography } from "@web3uikit/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Web3 from 'web3';
 
@@ -17,9 +17,12 @@ const index = ({project}) => {
     const helpingHandAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     const [showModal, setShowModal] = useState(false)
     const [amountToDonate, setAmountToDonate] = useState("")
+    const [amountSoFar, setAmountSoFar] = useState("")
 
    let sendValue = ethers.utils.parseEther("1")
-   
+   useEffect(()=>{
+    handleAmountSoFar()
+   }, [amountSoFar])
     const { runContractFunction: fund, data: dataReturned,
       error,
       isLoading,
@@ -32,15 +35,52 @@ const index = ({project}) => {
     },
     })
 
-    const {fetch, error: transferError, isFetching: transferIsFEtching} = useWeb3Transfer({
-      amount: sendValue,
-      receiver: helpingHandAddress,
-      type: "native",
-    });
+    const { runContractFunction: withdraw, data: withdrawDataReturned,
+      error: withdrawError,
+      isLoading: withdrawIsLoading,
+      isFetching: withdrawIsFetching,
+     } = useWeb3Contract({
+      abi: contractAbi,
+      contractAddress: helpingHandAddress, // specify the networkId
+      functionName: "withdraw",
+      msgValue: amountToDonate,
+      params: {receiver: data.address
+    },
+    })
+
+    const { runContractFunction: getAmountSoFar, data: getAmountSoFarDataReturned,
+      error: getAmountSoFarError,
+     } = useWeb3Contract({
+      abi: contractAbi,
+      contractAddress: helpingHandAddress, // specify the networkId
+      functionName: "getAmountSoFar",
+      params: {anOwner: account
+    },
+    })
 
     
+    const handleAmountSoFar = async()=>{
+      // setShowModal(true)
+      const result = await getAmountSoFar();
+      console.log(amountSoFar);
+      setAmountSoFar(ethers.utils.formatEther(result))
+    }
+
     const handleDonateClick = async()=>{
       setShowModal(true)
+    }
+
+    // To withhdraw funds
+    const handleWithdrawClick = async()=>{
+      const result = await withdraw()
+      if(result){
+        console.log(result);
+        alert("Withdraw successful")
+      }
+      if(withdrawError){
+        console.log(withdrawError);
+        alert("Error withdrawing")
+      }
     }
 
     const donate =async()=>{
@@ -82,10 +122,19 @@ const index = ({project}) => {
                 <h2 className={"text-center"}>{data.description}</h2>
                 </div>
 
+          <div>
+           < h2 className={"text-center"}>{amountSoFar}</h2>
+          </div>
+
           <button
           onClick={handleDonateClick}
               class={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
               >Donate</button>
+
+              <button
+          onClick={handleWithdrawClick}
+              class={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
+              >Withdraw</button>
               <Modal
       cancelText="Cancel"
       id="v-center"
