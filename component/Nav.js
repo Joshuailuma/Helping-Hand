@@ -19,7 +19,6 @@ const Nav = () => {
 let i = false
 
   const btnToggle = () => {
-    console.log('HI');
     setShowNav(!showNav)
     myRef.current.classList.toggle(styles.open)
     
@@ -38,7 +37,6 @@ let i = false
   };
 
   
-  if (isWeb3Enabled){
     return (
     <nav  className={`relative container mx-auto p-6 ${styles.navigation}`}>
         {/* Flex Container */}
@@ -47,25 +45,20 @@ let i = false
           <div className="pt-2">
         <Link href="./"> <Image src="/logo.jpeg" alt="Vercel Logo" width={100} height={25} /></Link>  
           </div>
-
           {/* Menu Items */}
-          <div className="hidden md:flex md:space-x-6">
+          <div className="hidden space-x-6 md:flex">
             <Link className="text-white hover:text-brightBlue" href="/">Home</Link> 
             <Link className='text-white hover:text-darkGrayishBlue' href="/start_funding">Start Funding</Link>
             <Link className='text-white	hover:text-darkGrayishBlue' href="/available_projects">Available Projects</Link>
             <Link className='text-white	hover:text-darkGrayishBlue' href="/about">About</Link>
+            </div>
             <ConnectButton/>
 
-            </div>
-        {/* Button */}
-        <Link href="#" className="hidden md:block  p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight "
-          >Get Started</Link>
-         
 
           {/* Hamburger icon*/}
           <div onClick={btnToggle} ref={myRef}>
           <button id="menu-btn" 
-          className="block hamburger focus:outline-none md:hidden px-16">
+          className={"block hamburger focus:outline-none"}>
           <span className={styles.hamburgerTop}></span>
           <span className={styles.hamburgerMiddle}></span>
           <span className={styles.hamburgerBottom}></span>
@@ -73,63 +66,19 @@ let i = false
           </div>
         </div>
 
+
         {/* Mobile menu */}
-        <div className="md:hidden">
+        <div className="hidden">
         <div
-          id="menu" className={ showNav ? "absolute flex flex-col  items-center self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md" : "absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md"  }>          <Link href="/">Home</Link>
+          id="menu" className={ ""}>      
+          <Link href="/">Home</Link>
           <Link href="/about">About</Link>
+        <h2>jwj</h2>
         </div>
+
       </div>
       </nav>
-    )
-  } else{
-// console.log("CLient User not here");
-  return (
-    <nav id="nav" className={`relative container mx-auto p-6 ${styles.navigation}`}>
-           {/* Flex Container */}
-           <div className="flex item-center justify-between">
-             {/* Logo */}
-             <div className="pt-2">
-           <Link href="./"> <Image src="/logo.jpeg" alt="Vercel Logo" width={100} height={25} /></Link>  
-             </div>
-   
-             {/* Menu Items */}
-             <div className="hidden md:flex md:space-x-6">
-             <Link className='text-white	hover:text-darkGrayishBlue' href="/available_projects">Available Projects</Link>
-            <Link className='text-white	hover:text-darkGrayishBlue' href="/about">About</Link>
-            <ConnectButton/>
-
-               </div>
-           {/* Button */}
-           {/* <Link href="#" className="hidden md:block  p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight "
-             >Get Started</Link> */}
-            
-   
-             {/* Hamburger icon*/}
-             <div onClick={btnToggle} ref={myRef}>
-             <button id="menu-btn" 
-             className="block hamburger focus:outline-none md:hidden">
-             <span className={styles.hamburgerTop}></span>
-             <span className={styles.hamburgerMiddle}></span>
-             <span className={styles.hamburgerBottom}></span>
-           </button>
-             </div>
-           </div>
-   
-           {/* Mobile menu */}
-           <div className="md:hidden">
-           <div
-             id="menu" className={ showNav ? "absolute flex flex-col  items-center self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md" : "absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md"  }>
-             <Link href="/">Home</Link>
-             <Link href="/about">About</Link>
-           </div>
-         </div>
-         </nav>
-  )
-  }
-    
-       
-  
+      )
 }
 
 export default Nav

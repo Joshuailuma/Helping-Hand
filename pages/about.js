@@ -5,7 +5,7 @@ import Footer from '../component/Footer'
 
  const about = () => {
   return (
-    <div className={"pt-16"}>
+    <div className={"mt-36"}>
       <section id='hero'>
         {/* Flex row makes it responsive */}
         <container className="flex flex-col-reverse md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
@@ -15,22 +15,15 @@ import Footer from '../component/Footer'
               About Us
             </h1>
             <p className="max-w-lg text-center md:text-left text-textColorWrite text-2xl">
-            Own Your Property makes you confident with you everything you have. 
-            Your land, property, house, electronic devices such as Phones, Laptops, Computers could be stored
-            and identified as yours.
+            Helping hand allows you help people by donating to their projects. You could also create a project and ask for help
             </p>
-            <div class="flex justify-center md:justify-start">
-            <a
-              href="#"
-              class="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
-              >Get Started</a>
-          </div>
+            
           </div>
 
           {/* Image item */}
           <div className='mid:w-1/2'>
 
-          <Image src="/home.jpeg" alt="illustration-intro.svg" width={580} height={525} />
+          <Image src="/support_woman.jpeg" alt="support_woman" width={580} height={525} />
 
           </div>
         </container>

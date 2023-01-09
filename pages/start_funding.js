@@ -5,6 +5,9 @@ import axios from "axios";
 import { useMoralis, useWeb3Contract} from 'react-moralis';
 import networkMapping from "../constants/networkMapping.json"
 import contractAbi from "../constants/abi.json"
+import { useNotification } from '@web3uikit/core';
+import { Bell } from '@web3uikit/icons';
+
 
 function start_funding() {
   const router = useRouter()
@@ -12,8 +15,12 @@ function start_funding() {
 const [form, setForm] = useState({title: '', description: '', imageUrl: '', address: '', endTime: ''})
 const [imageSrc, setImageSrc] = useState();
 const [uploading, setUploading] = useState(false);
+const [isFile, setIsFile] = useState(false);
 const {chainId: chainId, isWeb3Enabled, account} = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
+const helpingHandAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+
+const dispatch = useNotification()
 
 let formResult = {
   title: form.title,
@@ -22,6 +29,7 @@ let formResult = {
   address: form.account,
   endTime: form.endTime
 }
+
 
 // useEffect(() => {
 //   if (isWeb3Enabled) {
@@ -48,6 +56,8 @@ function handleOnFileChange(changeEvent) {
   }
 
   reader.readAsDataURL(changeEvent.target.files[0]);
+  //Make file to now be present
+  setIsFile(true)
 }
 
 /**
@@ -56,34 +66,48 @@ function handleOnFileChange(changeEvent) {
  */
 async function handleOnFormSubmit(event) {
   event.preventDefault();
-  setUploading(true)
 
-  // We just try to get the file
-  const form = event.currentTarget;
-  const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
-  console.log(fileInput);
-  const formData = new FormData();
+  // To make sure file is there
+  if(isFile){
 
-  for ( const file of fileInput.files ) {
-    formData.append('file', file);
-  }
+    setUploading(true)
 
-  formData.append('upload_preset', 'my-uploads');
-
-  // What we get back from the upload
-  const dataFromCloudinary = await fetch('https://api.cloudinary.com/v1_1/dreuuje6i/image/upload', {
-    method: 'POST',
-    body: formData
-  }).then(r => r.json());
-
-  const cloudinaryResult = dataFromCloudinary.secure_url.toString()
-  // setImageSrc(dataFromCloudinary.secure_url);
-
-  console.log(cloudinaryResult);
+    // We just try to get the file
+    const form = event.currentTarget;
+    const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
   
-  // Sets the imageUrl to a new value
-  formResult.imageUrl = cloudinaryResult
-createProject()
+    const formData = new FormData();
+  
+    for ( const file of fileInput.files ) {
+      formData.append('file', file);
+    }
+  
+    formData.append('upload_preset', 'my-uploads');
+  
+    // What we get back from the upload
+    const dataFromCloudinary = await fetch('https://api.cloudinary.com/v1_1/dreuuje6i/image/upload', {
+      method: 'POST',
+      body: formData
+    }).then(r => r.json());
+  
+    const cloudinaryResult = dataFromCloudinary.secure_url.toString()
+    // setImageSrc(dataFromCloudinary.secure_url);
+  
+    console.log(cloudinaryResult);
+    
+    // Sets the imageUrl to a new value
+    formResult.imageUrl = cloudinaryResult
+  createProject()
+  } else{
+    dispatch({
+      type: "error",
+      message: "Please upload a file",
+      title: "No file present",
+      position: "topR",
+      icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+    })
+  }
+ 
 
 }
 
@@ -108,27 +132,65 @@ const  createProject = async()=>{
   if (isWeb3Enabled){
     try {
       const {data} = await axios.post('/api/project', formResult);
-      const resultFromBlockchain = await startProject()
-      if(resultFromBlockchain){
-    
-        alert("Project created successfuly")
+      if(data){
+        const resultFromBlockchain = await startProject({
+          onSuccess: handleStartProjectSuccess,
+          onError: (error)=>{handleStartProjectFailure(error)}
+        })
       }
-      if(error){
-        alert("Project creation failed")
-      }
+
     } catch (error) {
       console.log("error");
       }
     setUploading(false)
   } else{
-    alert("Please connect wallet")
+    handleWalletNotConnected()
   }
   
-
 }
 
-const helpingHandAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+const handleWalletNotConnected = ()=>{
+  dispatch({
+    type: "error",
+    message: "Please connect wallet",
+    title: "No wallet",
+    position: "topR",
+    icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+  })
+}
 
+
+const handleStartProjectSuccess = async(tx)=>{
+  try{
+    tx.wait(1)
+  handleNotification(tx)
+  } catch(e){
+    console.log(e);
+  }
+  
+}
+
+const handleNotification =()=>{
+  dispatch({
+    type: "success",
+    message: "Project creation succesfull",
+    title: "Transaction Notification",
+    position: "topR",
+    icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+  })
+}
+
+
+
+const handleStartProjectFailure =(e)=>{
+  dispatch({
+    type: "error",
+    message: `Creation failed ${e.message}`,
+    title: "Transaction Notification",
+    position: "topR",
+    icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+  })
+}
 
 const { runContractFunction: startProject, data: dataReturned,
   error,
@@ -192,7 +254,7 @@ return (
 
               </div>
 
-              <input disabled={uploading} type="submit" value="Submit" className="px-16 mb-12 py-2 mt-4 ml-12 focus:outline-none  text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight" />
+              <input disabled={uploading || isLoading || isFetching} type="submit" value={uploading || isLoading || isFetching ? "" : "Submit"} className={uploading || isLoading || isFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 focus:outline-none  text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight"} />
             </form>            
         </section>
     </div>

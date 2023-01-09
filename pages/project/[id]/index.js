@@ -5,24 +5,29 @@ import contractAbi from "../../../constants/abi.json"
 import { Card, Modal, Input, Typography } from "@web3uikit/core";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import Web3 from 'web3';
-
-
+import { Bell } from '@web3uikit/icons';
+import { useNotification } from '@web3uikit/core';
+import {Ada} from '@web3uikit/icons'
+import {AtomicApi} from '@web3uikit/icons'
+import networkMapping from "../../../constants/networkMapping.json"
 
 const index = ({project}) => {
     const router = useRouter()
     const data = router.query
     const {chainId, isWeb3Enabled, account} = useMoralis()
     const chainString = chainId ? parseInt(chainId).toString() : "31337"
-    const helpingHandAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+    const helpingHandAddress = networkMapping[chainString][0]
     const [showModal, setShowModal] = useState(false)
     const [amountToDonate, setAmountToDonate] = useState("")
     const [amountSoFar, setAmountSoFar] = useState("")
+    const dispatch = useNotification()
 
-   let sendValue = ethers.utils.parseEther("1")
    useEffect(()=>{
+    if(isWeb3Enabled){
     handleAmountSoFar()
-   }, [amountSoFar])
+  }
+   }, [isWeb3Enabled])
+
     const { runContractFunction: fund, data: dataReturned,
       error,
       isLoading,
@@ -58,74 +63,159 @@ const index = ({project}) => {
     },
     })
 
+    const { runContractFunction: getPriceFeed
+     } = useWeb3Contract({
+      abi: contractAbi,
+      contractAddress: helpingHandAddress, // specify the networkId
+      functionName: "getPriceFeed"
+    })
+
+
     
-    const handleAmountSoFar = async()=>{
-      // setShowModal(true)
-      const result = await getAmountSoFar();
-      console.log(amountSoFar);
-      setAmountSoFar(ethers.utils.formatEther(result))
+    async function handleAmountSoFar () {
+      const result = (await getAmountSoFar());
+      setAmountSoFar(ethers.utils.formatUnits(result))
+      //formatEther
+      if(!result){
+        setAmountSoFar("No data")
+      }
     }
 
+    
+
     const handleDonateClick = async()=>{
-      setShowModal(true)
+      // setShowModal(true)
+      const result = await getPriceFeed({onError: (e)=>{console.log(e);}})
+      console.log(result);
     }
 
     // To withhdraw funds
     const handleWithdrawClick = async()=>{
-      const result = await withdraw()
-      if(result){
-        console.log(result);
-        alert("Withdraw successful")
-      }
-      if(withdrawError){
-        console.log(withdrawError);
-        alert("Error withdrawing")
-      }
+      const result = await withdraw({
+        onSuccess: handleWithdrawSuccess,
+        onError: (error)=>{handleWithdrawFailure(error)
+        }
+      })
+      // if(result){
+      //   console.log(result);
+      //   alert("Withdraw successful")
+      // }
+      // if(withdrawError){
+      //   console.log(withdrawError);
+      //   alert("Error withdrawing")
+      // }
+    }
+
+    const handleWithdrawSuccess = async(tx)=>{
+      try{
+        tx.wait(1)
+      handleWithdrawNotification(tx)
+      } catch(e){
+        console.log(e);
+      }     
+    }
+
+    const handleWithdrawNotification =()=>{
+      dispatch({
+        type: "success",
+        message: "Withdraw successful",
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleWithdrawFailure =(e)=>{
+      dispatch({
+        type: "error",
+        message: `Withdraw failed ${e.message}`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
     }
 
     const donate =async()=>{
       console.log("Donate clicked");
       if(isWeb3Enabled){
-        const dataReturned = await fund()
-        if(dataReturned){
-          console.log(dataReturned);
-          alert("Donation successfull")
-        }
-        if(error){
-          console.log(error);
-          alert("Error donating. Try again")
-        }
+        const dataReturned = await fund({
+          onSuccess: handleDonationSuccess,
+          onError: (error)=>{handleDonationFailure(error)
+          }
+        })
+        // if(dataReturned){
+        //   console.log(dataReturned);
+        //   alert("Donation successfull")
+        // }
+        // if(error){
+        //   console.log(error);
+        //   alert("Error donating. Try again")
+        // }
       } else{
-        alert("Please connect a wallet")
+        handleWalletNotConnected()
       }
     }
 
+    const handleDonationSuccess = async(tx)=>{
+      try{
+        tx.wait(1)
+      handleDonationNotification(tx)
+      } catch(e){
+        console.log(e);
+      }     
+    }
+
+   
+    const handleDonationNotification =()=>{
+      dispatch({
+        type: "success",
+        message: "Donation successful",
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleDonationFailure =(e)=>{
+      dispatch({
+        type: "error",
+        message: `Donation failed ${e.message}`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleWalletNotConnected = ()=>{
+      dispatch({
+        type: "error",
+        message: "Please connect wallet",
+        title: "No wallet",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
     return (
     <>
-    <section id='hero '>
+    <section id='hero'>
         {/* Flex row makes it responsive */}
         <container className="flex flex-col md:flex-row  px-6 mx-auto mt-10 space-y-0 md:space-y-0 pt-28">
           {/* Left item */}
           <div className='flex flex-col mb-32 space-y-12 md:w-3/4 mr-20'>
-            <h1 className=" text-4xl text-center md:text-5xl">
-              {data.title}
-            </h1>
+          <div className={"flex justify-center align-center"}>
 
-            <Image className={"px-44"}  src={data.imageUrl} alt="home" width={380} height={325} layout="responsive" />
-
-            <div class="flex justify-center">
-              <h1 className="text text-2xl" >Description</h1>
+    <div className={""}>
+          <Card className={"max-w-md justify-center"} onClick={""}
+            title={data.title}
+            description={data.description}>
+            <div>
+           < h2 className={"text-center"}>Amount gotten: {amountSoFar}</h2>
           </div>
-            
+             <Image loader={() => data.imageUrl}
+            src={data.imageUrl} height="320" width="400"/> 
+           </Card>
 
-          <div className={"justify-center"} > 
-                <h2 className={"text-center"}>{data.description}</h2>
-                </div>
-
-          <div>
-           < h2 className={"text-center"}>{amountSoFar}</h2>
-          </div>
-
+          <div className={"flex flex-col mt-10 space-y-9"}>
           <button
           onClick={handleDonateClick}
               class={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
@@ -135,6 +225,9 @@ const index = ({project}) => {
           onClick={handleWithdrawClick}
               class={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
               >Withdraw</button>
+
+          </div>
+          
               <Modal
       cancelText="Cancel"
       id="v-center"
@@ -160,12 +253,17 @@ const index = ({project}) => {
         width="100%"
       />
     </Modal>
+          </div>
+          </div>
           </div> {/*End of left item */}
 
           {/* Image item */}
           <div className='md:w-1/4'>
 
-          <h1 > Here is all you need to know about Help me app. We are here to help people</h1>
+          <h1 className={"text-lg	my-11"}> <Ada fontSize='50px'/>
+          Donate to help accomplish projects</h1>
+          <h1 className={"text-lg	"}> <AtomicApi fontSize='50px'/>
+          Only the creator can withdraw after the specified timeframe is over</h1>
 
           </div>
         </container>

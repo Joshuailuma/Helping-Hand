@@ -57,12 +57,10 @@ async function updateUIValues() {
 
  async function runTheContract() { 
     const i = await getOwner()
-
-  console.log(i);
 }
 
   return (
-    <div id='body' className={"mx-5 pt-24"}>
+    <div id='body' className={"bg-black"}>
       {/* Nav bar will display on all screens */}
      
       
@@ -70,10 +68,10 @@ async function updateUIValues() {
       <section id='hero'>
         {/* Top */}
         <container className="items-center px-6 mx-auto">
-            <h1 className="text-4xl font-bold text-center md:text-5xl ">
+            <h1 className="text-white text-4xl font-bold text-center md:text-5xl ">
               Helping Hand
             </h1>
-            <p className="text-center font-thin md:text-4xl text-darkGrayishBlue mt-12">
+            <p className="text-center text-white font-thin md:text-4xl text-darkGrayishBlue mt-12">
             You can donate to help people in need. Be rest assured that your money will get to the solicitor.
             You could also solicit for funds.
             </p>
@@ -95,7 +93,7 @@ async function updateUIValues() {
       {/* Features section */}
       <section id="features">
 
-        <div className={'mt-20 mb-20 text-center text-4xl font-semibold'}>We provide a decentralized platform to help people in need</div>
+        <div className={'text-darkGrayishBlue mt-20 mb-20 text-center text-4xl font-semibold'}>We provide a decentralized platform to help people in need</div>
         {/* space mean space between the items */}
 
         <div className="container flex flex-col px-4 mx-auto mt-10 space-y-12 md:space-y-0 md:flex-row">
@@ -235,59 +233,49 @@ async function updateUIValues() {
       {/* I can put 3 recently listed projects here */}
       {/* Testimonials */}
 
+      
+
+      {/* I can put 3 recently listed projects here */}
+      {/* Testimonials */}
+
       <section id="testimonials">
         {/*Container to hold Heading and testemonial block*/}
         <div className="max-w-6xl px-5 mx-auto mt-32 text-center">
           {/* Heading */}
-          <h2 className="text-4xl font-bold text-center">
+          <h2 className="text-4xl font-bold text-center text-white">
             Recently listed projects
           </h2>
 
         {/* Testimonial. Flex is like flexbox */}
-        <div className="flex flex-col mt-24 md:flex-row md:space-x-6">
+        <div className=" bg-black flex flex-col mt-24 md:flex-row md:space-x-6">
           {/* Testimonial 1. For medium screen we will take 1-third of each testimonial */}
-          <div className="hidden flex-col items-center p-6 space-y-6 rounded-lg bg-veryLightGray md:flex md:w-1/3">
+          <div className="bg-black flex-col items-center md:flex md:w-1/3">
           {/* Image div */}
-          <div className="mt-14 w-16">
-          <Image src="/avatar-anisha.png" alt="illustration-intro.svg" width={100} height={10} />
+          <div className=" bg-black rounded truncate">
+          <Image className='bg-black' src="/helping.jpeg" alt="illustration-intro.svg" width={300} height={200} />
           </div>
-          <h5 className="text-lg font-bold"> Anisha Li</h5>
-          <p className="text-sm text-darkGrayishBlue">
-          Stop jumping from one service to another to communicate, store
-                files, track tasks and share documents. Manage offers an
-                all-in-one team productivity solution.
-          </p>
+          <h5 className="text-lg font-bold text-white"> Donate to help people in need</h5>
           </div>
 
 
         {/* Testimonial 1. For medium screen we will take 1-third of each testimonial */}
-        <div className="flex flex-col items-center p-6 space-y-6 rounded-lg bg-veryLightGray md:w-1/3">
+        <div className="flex flex-col items-center bg-black md:w-1/3">
           {/* Image div */}
-          <div className="mt-14 w-16">
-          <Image src="/avatar-ali.png" alt="illustration-intro.svg" width={100} height={10} />
+          <div className="rounded truncate">
+          <Image src="/help_me.jpg" alt="illustration-intro.svg" width={300} height={300} />
           </div>
-          <h5 className="text-lg font-bold"> Ali Bravo</h5>
-          <p className="text-sm text-darkGrayishBlue">
-          Stop jumping from one service to another to communicate, store
-                files, track tasks and share documents. Manage offers an
-                all-in-one team productivity solution.
-          </p>
+          <h5 className="text-lg font-bold text-white"> Start your own funding project</h5>
           </div>
 
 
 
           {/* Testimonial 3. For medium screen we will take 1-third of each testimonial */}
-          <div className="flex flex-col items-center p-6 space-y-6 rounded-lg bg-veryLightGray md:w-1/3">
-          {/* Image div */}
-          <div className="mt-14 w-16">
-          <Image src="/avatar-richard.png" alt="illustration-intro.svg" width={100} height={10} />
+          <div className="flex flex-col items-center rounded-lg bg-black md:w-1/3">
+         {/* Image div */}
+         <div className="rounded truncate">
+          <Image src="/help_me.jpg" alt="illustration-intro.svg" width={300} height={300} />
           </div>
-          <h5 className="text-lg font-bold"> Richard Watts</h5>
-          <p className="text-sm text-darkGrayishBlue">
-          Stop jumping from one service to another to communicate, store
-                files, track tasks and share documents. Manage offers an
-                all-in-one team productivity solution.
-          </p>
+          <h5 className="text-lg text-white font-bold"> Donate to help people in need</h5>
           </div>
         </div>
 
@@ -310,21 +298,6 @@ async function updateUIValues() {
         </div>
       </section>
 
-      {/* Call to action */}
-      <section id="cta" className='bg-brightBlue'>
-        {/* Flex container */}
-        <div className="container flex flex-col items-center justify-between px-6 py-24 mx-auto space-y-12 md:py-12 md:flex-row md:space-y-0">
-          <h2 className='text-5xl font-bold text-center text-white md:text-4xl md:max-w-xl md:text-left'>
-            Simplify how your team works today
-          </h2>
-          {/* Button */}
-          <div>
-          <a href="#" class="p-3 px-6 pt-2 text-brightBlue bg-white shadow-2xl rounded-full baseline hover:bg-gray-900 "
-          >Get Started</a>
-          </div>
-        </div>
-
-      </section>
 
       {/* Footer */}
       <Footer/>
