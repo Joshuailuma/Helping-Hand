@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from 'next/link';
 import {Circles} from "react-loader-spinner";
 import {Card} from '@web3uikit/core';
+import NavBar from '../components/NavBar';
 
 const available_projects=({data}) =>{
   const [loading, setLoading] = useState(true)
@@ -22,7 +23,7 @@ const available_projects=({data}) =>{
 
   
   // Show the circle if fetching
-  return (<Suspense fallback={<Circles
+  return (<Suspense  fallback={<Circles
     height="80"
     width="80"
     color="#4fa94d"
@@ -46,8 +47,8 @@ const available_projects=({data}) =>{
     
   ) : (
     <>
-    <div className='grid grid-cols-2 gap-4 md:grid-cols-4 pt-36 px-8'>
-    
+    <div className={"bg-lightBlack text-white grid grid-cols-2 gap-4 md:grid-cols-4 pt-36 px-8"}>
+    <NavBar/>
     {data.map(i => {
 
       // A full project card
@@ -56,7 +57,7 @@ const available_projects=({data}) =>{
           pathname: `/project/${i._id}`,
           query: i}}>
 
-<Card className={"justify-center"}
+<Card className={"justify-center bg-black"}
     description={i.description}
     title={i.title}
     key={i._id}

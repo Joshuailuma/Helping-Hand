@@ -1,18 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    screens: {
-      sm: '480px',
-      md: '768px',
-      lg: '976px',
-      xl: '1440px'
-    },
     extend: {
+      fontFamily: {
+        waterfall: ['Waterfall', 'cursive'],
+      },
       colors: {
         brightBlue: 'hsl(211, 62%, 43%)',
         brightBlueLight: 'hsl(211, 75%, 47%)',
@@ -22,9 +18,10 @@ module.exports = {
         veryDarkBlue: 'hsl(233, 12%, 13%)',
         veryPaleRed: 'hsl(13, 100%, 96%)',
         veryLightGray: 'hsl(0, 0%, 98%)',
-        textColorWrite: 'hsl(210, 29%, 29%)'
+        textColorWrite: 'hsl(210, 29%, 29%)',
+        lightBlack: '#212F3D'
       },
     },
   },
   plugins: [],
-}
+};

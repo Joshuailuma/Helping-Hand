@@ -1,4 +1,3 @@
-import React from 'react'
 
 function Footer() {
   return (
@@ -18,9 +17,10 @@ function Footer() {
       {/* List container */}
       <div className="flex justify-around space-x-32">
         <div className="flex flex-col space-y-3 text-white">
-          <a href="#" className='hover:text-brightRed'>Home</a>
-          <a href="#" className='hover:text-brightRed'>Available projects</a>
-          <a href="/about" className='hover:text-brightRed'>Contact</a>
+        <a href="/" className='hover:text-brightRed'>Home</a>
+          <a href="/start_funding" className='hover:text-brightRed'>Create project</a>
+          <a href="/available_projects" className='hover:text-brightRed'>Available projects</a>
+          <a href="/about" className='hover:text-brightRed'>About us</a>
         </div>
 
       </div>

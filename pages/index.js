@@ -1,48 +1,18 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import Footer from '../component/Footer'
-import styles from '../styles/Home.module.css'
- import { FaBeer, FaBuffer, FaGrinAlt } from 'react-icons/fa';
- import {abi, contractAddress} from "../constants"
- import { useMoralis } from "react-moralis"
- import { useWeb3Contract } from 'react-moralis';
+import NavBar from '../components/NavBar';
+import { FaBeer, FaBuffer, FaGrinAlt } from 'react-icons/fa';
+import {abi, contractAddress} from "../constants"
+import { useMoralis } from "react-moralis"
+import { useWeb3Contract } from 'react-moralis';
 import { useEffect } from 'react';
+import Image from 'next/image'
+import Footer from '../components/Footer'
+
 
 export default function Home() {
-
 
   const {chainId: chainIdHex, isWeb3Enabled, account} = useMoralis()
   const realChainId = parseInt(chainIdHex)
   const helpingHandAddress = realChainId in contractAddress ? contractAddress[realChainId][0]: null
-
-
-  useEffect(() => {
-    if (isWeb3Enabled) {
-      console.log( typeof(account));
-
-        updateUIValues()
-    }
-}, [isWeb3Enabled])
-
-async function updateUIValues() {
- 
-  // A pure function
-  // const i = (await getOwner()).toString()
-  // console.log(i);
-}
-//   // A major function
-//   const {
-//     runContractFunction: enterRaffle,
-//     data: enterTxResponse,
-//     isLoading,
-//     isFetching,
-// } = useWeb3Contract({
-//     abi: abi,
-//     contractAddress: helpingHandAddress,
-//     functionName: "enterRaffle",
-//     msgValue: entranceFee, // Pass to functon
-//     params: {}, //If there is params to pass to the constructor
-// })
 
 
   // Call a view function
@@ -59,19 +29,20 @@ async function updateUIValues() {
     const i = await getOwner()
 }
 
+
+
   return (
-    <div id='body' className={"bg-black"}>
-      {/* Nav bar will display on all screens */}
-     
-      
+    <div className={"bg-lightBlack"}>
+      <NavBar />
+
       {/* Hero section */}
-      <section id='hero'>
+      <section id='hero' className={"mt-8"}>
         {/* Top */}
         <container className="items-center px-6 mx-auto">
             <h1 className="text-white text-4xl font-bold text-center md:text-5xl ">
               Helping Hand
             </h1>
-            <p className="text-center text-white font-thin md:text-4xl text-darkGrayishBlue mt-12">
+            <p className="text-center text-white font-thin md:text-4xl mt-12">
             You can donate to help people in need. Be rest assured that your money will get to the solicitor.
             You could also solicit for funds.
             </p>
@@ -247,19 +218,19 @@ async function updateUIValues() {
           </h2>
 
         {/* Testimonial. Flex is like flexbox */}
-        <div className=" bg-black flex flex-col mt-24 md:flex-row md:space-x-6">
+        <div className=" bg-lightBlack flex flex-col mt-24 md:flex-row md:space-x-6">
           {/* Testimonial 1. For medium screen we will take 1-third of each testimonial */}
-          <div className="bg-black flex-col items-center md:flex md:w-1/3">
+          <div className="bg-lightBlack flex-col items-center md:flex md:w-1/3">
           {/* Image div */}
-          <div className=" bg-black rounded truncate">
-          <Image className='bg-black' src="/helping.jpeg" alt="illustration-intro.svg" width={300} height={200} />
+          <div className=" bg-lightBlack rounded truncate">
+          <Image className='bg-lightBlack' src="/helping.jpeg" alt="illustration-intro.svg" width={300} height={200} />
           </div>
           <h5 className="text-lg font-bold text-white"> Donate to help people in need</h5>
           </div>
 
 
         {/* Testimonial 1. For medium screen we will take 1-third of each testimonial */}
-        <div className="flex flex-col items-center bg-black md:w-1/3">
+        <div className="flex flex-col items-center bg-lightBlack md:w-1/3">
           {/* Image div */}
           <div className="rounded truncate">
           <Image src="/help_me.jpg" alt="illustration-intro.svg" width={300} height={300} />
@@ -270,7 +241,7 @@ async function updateUIValues() {
 
 
           {/* Testimonial 3. For medium screen we will take 1-third of each testimonial */}
-          <div className="flex flex-col items-center rounded-lg bg-black md:w-1/3">
+          <div className="flex flex-col items-center rounded-lg bg-lightBlack md:w-1/3">
          {/* Image div */}
          <div className="rounded truncate">
           <Image src="/help_me.jpg" alt="illustration-intro.svg" width={300} height={300} />
@@ -301,6 +272,7 @@ async function updateUIValues() {
 
       {/* Footer */}
       <Footer/>
+     
     </div>
-  )
+  );
 }

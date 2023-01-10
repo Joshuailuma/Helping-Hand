@@ -1,5 +1,4 @@
 import React, { useState, useEffect} from 'react'
-import Footer from '../component/Footer'
 import { useRouter } from 'next/router'
 import axios from "axios";
 import { useMoralis, useWeb3Contract} from 'react-moralis';
@@ -7,7 +6,7 @@ import networkMapping from "../constants/networkMapping.json"
 import contractAbi from "../constants/abi.json"
 import { useNotification } from '@web3uikit/core';
 import { Bell } from '@web3uikit/icons';
-
+import NavBar from '../components/NavBar';
 
 function start_funding() {
   const router = useRouter()
@@ -206,17 +205,17 @@ const { runContractFunction: startProject, data: dataReturned,
 
 
 return (
-    <div className={"md:ml-40 pt-16"}>
-      
+    <div className={"bg-lightBlack md:ml-40 pt-16"}>
+            <NavBar />
        <section className="flex flex-col mt-12 mx-20">
-        <h1 className="text-4xl font-bold md:text-5xl"> Start Funding</h1>
+        <h1 className="text-4xl  text-white font-bold md:text-5xl"> Start Funding</h1>
         <p className="text-2xl mt-6 text-darkGrayishBlue">
             </p>     
             <form action=""  onSubmit={handleOnFormSubmit} className={"mt-6"}>
               <div className=" flex flex-col space-y-6">             
              {/* Name */}
 
-              <label  className="text-left">Title</label>
+              <label  className="text-left  text-slate-200">Title</label>
               <input onChange={handleChange} name={'title'} required maxLength={"40"}
                 type='text'
                 className={"px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"}
@@ -225,7 +224,7 @@ return (
 
                {/* endTime */}
 
-               <label  className="text-left">Number of days donation would last</label>
+               <label  className="text-left text-slate-200">Number of days donation would last</label>
               <input onChange={handleChange} name={'endTime'} required maxLength={"40"}
                 type='number'
                 className={"px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"}
@@ -236,13 +235,13 @@ return (
             {/* Description */}
 
 
-          <label htmlFor="description" className="text-left">The reason for this funding</label>
+          <label htmlFor="description" className="text-left text-slate-200">The reason for this funding</label>
               <textarea onChange={handleChange} name={'description'} required maxLength={"200"}
                 rows="4" cols="50"
                 className={"px-6 py-3 rounded-lg border-solid outline-double	w-80"}
                 placeholder="E.g In the IDP camp there are 20,000 persons..."
               > </textarea> 
-             <input onChange={handleOnFileChange} type='file' name='file'></input>
+             <input onChange={handleOnFileChange} className={"text-slate-200"} type='file' name='file'></input>
 
              {imageSrc ? (<div>
              <img alt="file uploader preview"
@@ -264,21 +263,3 @@ return (
 
 
 export default start_funding
-// export async function getSeversideProps(context){
-//     const session = await unstable_getServerSession(context.req, context.res, authOptions)
-//     if(!session){
-//         //redirect to login page
-//         return {
-//             redirect:{
-//                 destination: "api/auth/signin",
-//                 permanent: false,
-//             }
-//         }
-//     }
-//     return {
-//         props:{
-//             session,
-//         }
-//     }
-
-// }

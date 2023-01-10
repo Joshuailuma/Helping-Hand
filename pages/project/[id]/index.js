@@ -10,6 +10,7 @@ import { useNotification } from '@web3uikit/core';
 import {Ada} from '@web3uikit/icons'
 import {AtomicApi} from '@web3uikit/icons'
 import networkMapping from "../../../constants/networkMapping.json"
+import NavBar from "../../../components/NavBar";
 
 const index = ({project}) => {
     const router = useRouter()
@@ -84,18 +85,27 @@ const index = ({project}) => {
     
 
     const handleDonateClick = async()=>{
-      // setShowModal(true)
-      const result = await getPriceFeed({onError: (e)=>{console.log(e);}})
-      console.log(result);
+      if(isWeb3Enabled){
+        setShowModal(true)
+      } else{
+        handleWalletNotConnected()
+      }
+      // const result = await getPriceFeed({onError: (e)=>{console.log(e);}})
+      // console.log(result);
     }
 
     // To withhdraw funds
     const handleWithdrawClick = async()=>{
-      const result = await withdraw({
-        onSuccess: handleWithdrawSuccess,
-        onError: (error)=>{handleWithdrawFailure(error)
-        }
-      })
+      if(isWeb3Enabled){
+        const result = await withdraw({
+          onSuccess: handleWithdrawSuccess,
+          onError: (error)=>{handleWithdrawFailure(error)
+          }
+        })
+        } else{
+        handleWalletNotConnected()
+      }
+      
       // if(result){
       //   console.log(result);
       //   alert("Withdraw successful")
@@ -197,9 +207,10 @@ const index = ({project}) => {
     }
     return (
     <>
+    <NavBar/>
     <section id='hero'>
         {/* Flex row makes it responsive */}
-        <container className="flex flex-col md:flex-row  px-6 mx-auto mt-10 space-y-0 md:space-y-0 pt-28">
+        <container className="flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-28">
           {/* Left item */}
           <div className='flex flex-col mb-32 space-y-12 md:w-3/4 mr-20'>
           <div className={"flex justify-center align-center"}>
@@ -209,7 +220,7 @@ const index = ({project}) => {
             title={data.title}
             description={data.description}>
             <div>
-           < h2 className={"text-center"}>Amount gotten: {amountSoFar}</h2>
+           < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar}</h2>
           </div>
              <Image loader={() => data.imageUrl}
             src={data.imageUrl} height="320" width="400"/> 
@@ -260,9 +271,9 @@ const index = ({project}) => {
           {/* Image item */}
           <div className='md:w-1/4'>
 
-          <h1 className={"text-lg	my-11"}> <Ada fontSize='50px'/>
+          <h1 className={"text-lg	my-11 text-slate-200"}> <Ada fontSize='50px'/>
           Donate to help accomplish projects</h1>
-          <h1 className={"text-lg	"}> <AtomicApi fontSize='50px'/>
+          <h1 className={"text-lg	text-slate-200"}> <AtomicApi fontSize='50px'/>
           Only the creator can withdraw after the specified timeframe is over</h1>
 
           </div>
