@@ -20,8 +20,9 @@ function My_projects() {
     }, [account])
 
       async function fetchData() {
-        console.log(account);
-        let {data} = await axios.get("http://localhost:3000/api/myProjectsApi", {params: {
+        // console.log(account);
+        //Use http://localhost:3000 for dev server
+        let {data} = await axios.get("https://helping-hand-pi.vercel.app/api/myProjectsApi", {params: {
           address: account
       }
       })
