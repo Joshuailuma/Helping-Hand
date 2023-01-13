@@ -4,7 +4,7 @@ import { cloudinary } from '../../utils/cloudinary'
 
 dbConnect()
 
-export default async (req, res) =>{
+export default async function Handler(req, res){
     let result
     const {method, query: address} = req;
 console.log(address);

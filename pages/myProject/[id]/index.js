@@ -12,7 +12,7 @@ import {AtomicApi} from '@web3uikit/icons'
 import networkMapping from "../../../constants/networkMapping.json"
 import NavBar from "../../../components/NavBar";
 
-const index = ({project}) => {
+const Index = ({project}) => {
     const router = useRouter()
     const data = router.query
     const {chainId, isWeb3Enabled, account} = useMoralis()
@@ -36,7 +36,6 @@ const index = ({project}) => {
       abi: contractAbi,
       contractAddress: helpingHandAddress, // specify the networkId
       functionName: "withdraw",
-      msgValue: amountToDonate,
       params: {receiver: data.address
     },
     })
@@ -134,14 +133,14 @@ const index = ({project}) => {
     return (
     <>
     <NavBar/>
-    <section id='hero'>
+    <section id="hero">
         {/* Flex row makes it responsive */}
-        <container className="flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-28">
+        <container className={"flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-28"}>
           {/* Left item */}
-          <div className='flex flex-col mb-32 space-y-12 md:w-3/4 mr-20'>
+          <div className={"flex flex-col mb-32 space-y-12 md:w-3/4 mr-20"}>
           <div className={"flex justify-center align-center"}>
 
-    <div className={""}>
+    <div>
           <Card className={"max-w-md justify-center"} onClick={""}
             title={data.title}
             description={data.description}>
@@ -149,7 +148,7 @@ const index = ({project}) => {
            < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar}</h2>
           </div>
              <Image loader={() => data.imageUrl}
-            src={data.imageUrl} height="320" width="400"/> 
+            src={data.imageUrl} alt="image" height="320" width="400"/> 
            </Card>
 
           <div className={"flex flex-col mt-10 space-y-9"}>
@@ -167,11 +166,11 @@ const index = ({project}) => {
           </div> {/*End of left item */}
 
           {/* Image item */}
-          <div className='md:w-1/4'>
+          <div className={"md:w-1/4"}>
 
-          <h1 className={"text-lg	my-11 text-slate-200"}> <Ada fontSize='50px'/>
+          <h1 className={"text-lg	my-11 text-slate-200"}> <Ada fontSize="50px"/>
           Donate to help accomplish projects</h1>
-          <h1 className={"text-lg	text-slate-200"}> <AtomicApi fontSize='50px'/>
+          <h1 className={"text-lg	text-slate-200"}> <AtomicApi fontSize="50px"/>
           Only the creator can withdraw after the specified timeframe is over</h1>
 
           </div>
@@ -184,4 +183,4 @@ const index = ({project}) => {
   )
 }
 
-export default index
+export default Index

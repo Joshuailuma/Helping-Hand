@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
- const about = () => {
+ const About = () => {
   return (
     <div className={"mt-36 bg-lightBlack"}>
       <NavBar/>
@@ -36,4 +36,4 @@ import NavBar from '../components/NavBar'
   )
 }
 
-export default about
+export default About

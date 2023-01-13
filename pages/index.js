@@ -3,7 +3,6 @@ import { FaBeer, FaBuffer, FaGrinAlt } from 'react-icons/fa';
 import {abi, contractAddress} from "../constants"
 import { useMoralis } from "react-moralis"
 import { useWeb3Contract } from 'react-moralis';
-import { useEffect } from 'react';
 import Image from 'next/image'
 import Footer from '../components/Footer'
 
@@ -29,12 +28,9 @@ export default function Home() {
     const i = await getOwner()
 }
 
-
-
   return (
-    <div className={"bg-lightBlack mt-16"}>
+    <div className={"bg-lightBlack mt-16 md:mt-28"}>
       <NavBar />
-
       {/* Hero section */}
       <section id='hero' className={"mt-16"}>
         {/* Top */}
@@ -54,7 +50,7 @@ export default function Home() {
           </div>
 
           {/* Image item */}
-          <div className='md:w-1/3'>
+          <div className={"md:w-1/3"}>
           {/* <Image src="/help_me.jpg" alt="illustration-intro.svg" width={580} height={525} /> */}
           </div>
 
@@ -64,18 +60,27 @@ export default function Home() {
       {/* Features section */}
       <section id="features">
 
-        <div className={'text-darkGrayishBlue mt-20 mb-20 text-center text-4xl font-semibold'}>We provide a decentralized platform to help people in need</div>
+        <div className={"text-darkGrayishBlue mt-20 mb-20 text-center text-4xl font-semibold"}>We provide a decentralized platform to help people in need</div>
         {/* space mean space between the items */}
 
         <div className="container flex flex-col px-4 mx-auto mt-10 space-y-12 md:space-y-0 md:flex-row">
           {/* ====1st flex itemm "Start a funding project"  flex flex-col space-y-12 makes this div be a container===*/}
           <div className="flex flex-col space-y-6 md:w-1/3">
             {/* For icons */}
-          <div className="max-w-md text-4xl font-bold md:text-left">
-          <FaBeer />
+          <div className="max-w-md text-4xl font-bold flex justify-center md:justify-start md:text-left">
+          <FaBeer /> 
           </div>
           <h1 className=" text-center text-3xl text-darkGrayishBlue md:text-left">Start a funding project</h1>
-          <div className="flex items-center space-x-2">
+
+          <div className="flex justify-center md:justify-start items-center space-x-2">
+              <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
+              </div>
+              <p className="max-w-sm text-base text-darkGrayishBlue">
+              Watch your funds grow
+          </p>
+            </div>
+
+          <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
                 
               </div>
@@ -83,15 +88,9 @@ export default function Home() {
                 Create a funding project</p>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
-              </div>
-              <p className="max-w-sm text-base text-darkGrayishBlue">
-                Ask for funds for a good course
-          </p>
-            </div>
+            
 
-            <div className="flex items-center space-x-2">
+            <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
               </div>
               <p className="max-w-sm text-base text-darkGrayishBlue">
@@ -99,11 +98,11 @@ export default function Home() {
           </p>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
               </div>
               <p className="max-w-sm text-base text-darkGrayishBlue">
-              Watch your funds grow
+                Ask for funds for a good course
           </p>
             </div>
 
@@ -114,11 +113,20 @@ export default function Home() {
  {/* Second flex item  flex flex-col space-y-12 makes this div be a container*/}
           <div className="flex flex-col space-y-6 md:w-1/3">
             {/* For icons */}
-          <div className="max-w-md text-4xl font-bold md:text-left">
+          <div className="max-w-md text-4xl flex justify-center md:justify-start font-bold md:text-left">
           <FaBuffer />
           </div>
           <h1 className=" text-center text-3xl text-darkGrayishBlue md:text-left">Get donations after a specific time</h1>
-          <div className="flex items-center space-x-2">
+
+          <div className="flex justify-center md:justify-start items-center space-x-2">
+              <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
+              </div>
+              <p className="max-w-sm text-base text-darkGrayishBlue">
+              Watch your funds grow
+          </p>
+            </div>
+            
+          <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
                 
               </div>
@@ -126,30 +134,21 @@ export default function Home() {
                 The decentralized nature ensures you get your donations</p>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
               </div>
               <p className="max-w-sm text-base text-darkGrayishBlue">
-                Your little money can affect people's lives
+                Your little money can affect people&apos;s lives
           </p>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
               </div>
               <p className="max-w-sm text-base text-darkGrayishBlue">
                 Set time for end of solicit
           </p>
             </div>
-
-            <div className="flex items-center space-x-2">
-              <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
-              </div>
-              <p className="max-w-sm text-base text-darkGrayishBlue">
-              Watch your funds grow
-          </p>
-            </div>
-
           </div>
 
 
@@ -159,27 +158,27 @@ export default function Home() {
 {/* THird flex item  Help people in need*/}
 <div className="flex flex-col space-y-6 md:w-1/3">
             {/* For icons */}
-          <div className="max-w-md text-4xl font-bold md:text-left">
+          <div className="max-w-md text-4xl flex justify-center md:justify-start font-bold md:text-left">
           <FaGrinAlt />
           </div>
-          <h1 className=" text-center text-3xl text-darkGrayishBlue md:text-left">Help people in need</h1>
-          <div className="flex items-center space-x-2">
+          <h1 className="text-center text-3xl text-darkGrayishBlue md:text-left">Help people in need</h1>
+          <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
                 
               </div>
               <p className="max-w-md text-base text-darkGrayishBlue">
-              Your little money can affect people's lives</p>
+              Your little money can affect people&apos;s lives</p>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
               </div>
               <p className="max-w-md text-base text-darkGrayishBlue">
-                Your can put a smile on someone's face today
+                Your can put a smile on someone&apos;s face today
           </p>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
               </div>
               <p className="max-w-md text-base text-darkGrayishBlue">
@@ -187,7 +186,7 @@ export default function Home() {
           </p>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
               </div>
               <p className="max-w-md text-base text-darkGrayishBlue">
@@ -218,14 +217,14 @@ export default function Home() {
           </h2>
 
         {/* Testimonial. Flex is like flexbox */}
-        <div className=" bg-lightBlack flex flex-col mt-24 md:flex-row md:space-x-6">
+        <div className={"bg-lightBlack flex flex-col mt-24 md:flex-row md:space-x-6"}>
           {/* Testimonial 1. For medium screen we will take 1-third of each testimonial */}
-          <div className="bg-lightBlack flex-col items-center md:flex md:w-1/3">
+          <div className={"bg-lightBlack flex flex-col items-center md:flex md:w-1/3"}>
           {/* Image div */}
-          <div className=" bg-lightBlack rounded truncate">
-          <Image className='bg-lightBlack' src="/helping.jpeg" alt="illustration-intro.svg" width={300} height={200} />
+          <div className={"bg-lightBlack rounded truncate"}>
+          <Image className={"bg-lightBlack"} src="/helping.jpeg" alt="illustration-intro.svg" width={300} height={200} />
           </div>
-          <h5 className="text-lg font-bold text-white"> Donate to help people in need</h5>
+          <h5 className={"text-lg font-bold text-white"}> Donate to help people in need</h5>
           </div>
 
 

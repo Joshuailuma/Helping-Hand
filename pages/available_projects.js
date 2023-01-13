@@ -8,8 +8,6 @@ import NavBar from '../components/NavBar';
 import { useMoralis} from 'react-moralis';
 
 const available_projects=({data}) =>{
-  const [loading, setLoading] = useState(true)
-  const {isWeb3Enabled} = useMoralis()
 
   if(data.length == 0) {
     return (<div className={"flex my-56 justify-center align-center"}>
@@ -18,61 +16,33 @@ const available_projects=({data}) =>{
     </div>)
   }
 
-  // Set data to false to render the data page
-  useEffect(()=>{
-      setLoading(false)
-	}, [])
 
-  
   // Show the circle if fetching
-  return (<Suspense  fallback={<Circles
-    height="80"
-    width="80"
-    color="#2A6BB2"
-    ariaLabel="circles-loading"
-    wrapperStyle={{}}
-    wrapperClass=""
-    visible={true}
-  />}>
-
-  {
-  loading ? (
-    <Circles
-      height="80"
-      width="80"
-      color="#2A6BB2"
-      ariaLabel="circles-loading"
-      wrapperStyle={{}}
-      wrapperClass=""
-      visible={true}
-    />
-    
-  ) : (
+  return (
     <>
     <div className={"bg-lightBlack text-white grid grid-cols-2 gap-4 md:grid-cols-4 pt-36 px-8"}>
     <NavBar/>
     { !data ? ( 
       <div className={"pt-48"}>No Project right now...</div>
-        ):( data.map(i => {
+        ):( data.map((i) => {
       // A full project card
       return(
-        <Link href={{
-          pathname: `/project/${i._id}`,
-          query: i}}>
-
+        <div key={i._id}>
+        <Link href={{pathname: `/project/${i._id}`, query: i}}>
 <Card className={"justify-center bg-black"}
     title={i.title}
-    key={i._id}
   >
     <div >
       <Image 
         height={180}
         src={i.imageUrl}
         width={180}
+        alt={"image"}
       />
     </div>
   </Card>
 </Link>
+        </div>
     )
 }
 ))
@@ -81,10 +51,6 @@ const available_projects=({data}) =>{
 </div>
     </>
   )
-}
-</Suspense>
-  )
-  
 }
 
 export async function getServerSideProps(context) {

@@ -7,8 +7,9 @@ import contractAbi from "../constants/abi.json"
 import { useNotification } from '@web3uikit/core';
 import { Bell } from '@web3uikit/icons';
 import NavBar from '../components/NavBar';
+import Image from 'next/image';
 
-function start_funding() {
+function Start_funding() {
   const router = useRouter()
 
 const [form, setForm] = useState({title: '', description: '', imageUrl: '', address: '', endTime: '', public_id: ''})
@@ -294,7 +295,7 @@ return (
              <input onChange={handleOnFileChange} className={"text-slate-200"} type='file' name='file'></input>
 
              {imageSrc ? (<div>
-             <img alt="file uploader preview"
+             <Image alt="file uploader preview"
                       src={imageSrc}
                       width={320}
                       height={218}
@@ -312,4 +313,4 @@ return (
 }
 
 
-export default start_funding
+export default Start_funding

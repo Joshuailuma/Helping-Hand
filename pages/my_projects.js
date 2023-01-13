@@ -7,7 +7,7 @@ import {Card} from '@web3uikit/core';
 import NavBar from '../components/NavBar';
 import { useMoralis} from 'react-moralis';
 
-function my_projects() {
+function My_projects() {
 
     const [loading, setLoading] = useState(true)
     const [myProjects, setMyProjects] = useState([])
@@ -82,26 +82,29 @@ console.log(myProjects);
       { isWeb3Enabled ? ( !myProjects ?( 
          <div className={"pt-48"}>No Projects right now...</div>
             ) : (
-                myProjects.map(i => {
+                myProjects.map((i) => {
         // A full project card
         return(
+          <div key={i._id}
+          >
           <Link href={{
             pathname: `/myProject/${i._id}`,
             query: i}}>
   
   <Card className={"justify-center bg-black"}
       title={i.title}
-      key={i._id}
     >
       <div >
         <Image 
           height={180}
           src={i.imageUrl}
           width={180}
+          alt="image"
         />
       </div>
     </Card>
   </Link>
+          </div>
       )
   }
   ))
@@ -119,16 +122,4 @@ console.log(myProjects);
     
   }
  
-//   export async function getServerSideProps(context) {
-//         console.log("hahahahah");
-//     const { dataFromContext } = context.query;
-
-//     let {data} = await axios.get("http://localhost:3000/api/myProjectsApi")
-//     // We can only map through an array
-//     data = data.data
-//     return {
-//       props: {data} // will be passed to the page component as props
-//     }
-// }
-
-export default my_projects
+export default My_projects

@@ -12,7 +12,7 @@ import {AtomicApi} from '@web3uikit/icons'
 import networkMapping from "../../../constants/networkMapping.json"
 import NavBar from "../../../components/NavBar";
 
-const index = ({project}) => {
+const Index = ({project}) => {
     const router = useRouter()
     const data = router.query
     const {chainId, isWeb3Enabled, account} = useMoralis()
@@ -172,7 +172,7 @@ const index = ({project}) => {
            < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar}</h2>
           </div>
              <Image loader={() => data.imageUrl}
-            src={data.imageUrl} height="320" width="400"/> 
+            src={data.imageUrl} alt="image" height="320" width="400"/> 
            </Card>
 
           <div className={"flex flex-col mt-10 space-y-9"}>
@@ -230,4 +230,4 @@ const index = ({project}) => {
   )
 }
 
-export default index
+export default Index

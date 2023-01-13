@@ -1,3 +1,4 @@
+import Link from "next/link"
 
 function Footer() {
   return (
@@ -17,10 +18,10 @@ function Footer() {
       {/* List container */}
       <div className="flex justify-around space-x-32">
         <div className="flex flex-col space-y-3 text-white">
-        <a href="/" className='hover:text-brightRed'>Home</a>
-          <a href="/start_funding" className='hover:text-brightRed'>Create project</a>
-          <a href="/available_projects" className='hover:text-brightRed'>Available projects</a>
-          <a href="/about" className='hover:text-brightRed'>About us</a>
+        <Link href="/" className='hover:text-brightRed'>Home</Link>
+          <Link href="/start_funding" className='hover:text-brightRed'>Create project</Link>
+          <Link href="/available_projects" className='hover:text-brightRed'>Available projects</Link>
+          <Link href="/about" className='hover:text-brightRed'>About us</Link>
         </div>
 
       </div>

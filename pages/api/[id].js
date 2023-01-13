@@ -5,7 +5,7 @@ dbConnect()
 
 // Was created incase i want to do something specific with ID. 
 // i guess i'm already doing it with the other one
-export default async (req, res) =>{
+export default async function Handler(req, res) {
     const {
         query: {id},
         method} = req;
