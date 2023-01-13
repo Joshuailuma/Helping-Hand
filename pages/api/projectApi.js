@@ -1,12 +1,12 @@
 import dbConnect from '../../utils/dbconnect'
 import FundProject from '../../models/FundProject'
-
+import { cloudinary } from '../../utils/cloudinary'
 
 dbConnect()
 
 export default async (req, res) =>{
     let result
-    const {method} = req;
+    const {method, query: {id},} = req;
 console.log(method);
     switch (method){
 
@@ -30,6 +30,7 @@ console.log(method);
                 res.status(201).json({success: true, data: project})
                 console.log("Posting successful")
                 result = project
+                return;
             } catch (error) {
                 res.status(400).json({success: false})
                 result = "Error posting a project"
@@ -37,6 +38,33 @@ console.log(method);
                 console.log(error);
             }
             break;
+
+            case 'DELETE':
+                try {
+                    const project = await FundProject.findById(id)
+                    console.log("project is");
+
+                    console.log(project);
+                    
+                    const imgId = project.public_id;
+                    console.log("Image id is");
+                    console.log(imgId);
+
+                    if (imgId) {
+                        await cloudinary.uploader.destroy(imgId);
+                    }
+
+                    const deletedProject = await FundProject.deleteOne({id_: id})
+                    
+                    //If that note doesnt exist
+                    if (!deletedProject){
+                        res.status(400).json({success: false})
+                    }
+                    //Send an empty data in the response 
+                    res.status(201).json({success: true, data: {}})
+                } catch (error) {
+                    res.status(400).json({success: false})
+                }
             default:
                 res.status(400).json({success: false})
                 console.log('Default error');

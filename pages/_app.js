@@ -11,11 +11,11 @@ function MyApp({ Component, pageProps }) {
   
   React.useEffect(() => {
     const start = () => {
-      console.log("start");
+      //"start"
       setLoading(true);
     };
     const end = () => {
-      console.log("findished");
+      //"finished
       setLoading(false);
     };
     Router.events.on("routeChangeStart", start);
@@ -38,12 +38,13 @@ function MyApp({ Component, pageProps }) {
         <Circles
         height="80"
         width="80"
-        color="#4fa94d"
+        color="#2A6BB2"
         ariaLabel="circles-loading"
         wrapperStyle={{}}
         wrapperClass=""
         visible={true}
       />
+      <div className={"font-serif ml-4"}>Please wait or refresh after a long time</div>
       </div>
        </NotificationProvider>   
      </MoralisProvider>

@@ -18,8 +18,6 @@ const index = ({project}) => {
     const {chainId, isWeb3Enabled, account} = useMoralis()
     const chainString = chainId ? parseInt(chainId).toString() : "31337"
     const helpingHandAddress = networkMapping[chainString][0]
-    const [showModal, setShowModal] = useState(false)
-    const [amountToDonate, setAmountToDonate] = useState("")
     const [amountSoFar, setAmountSoFar] = useState("")
     const dispatch = useNotification()
 
@@ -29,17 +27,6 @@ const index = ({project}) => {
   }
    }, [isWeb3Enabled])
 
-    const { runContractFunction: fund, data: dataReturned,
-      error,
-      isLoading,
-      isFetching, } = useWeb3Contract({
-      abi: contractAbi,
-      contractAddress: helpingHandAddress, // specify the networkId
-      functionName: "fund",
-      msgValue: amountToDonate,
-      params: {receiver: data.address
-    },
-    })
 
     const { runContractFunction: withdraw, data: withdrawDataReturned,
       error: withdrawError,
@@ -81,69 +68,59 @@ const index = ({project}) => {
         setAmountSoFar("No data")
       }
     }
+ 
 
-    
-
-    const handleDonateClick = async()=>{
+    // To withhdraw funds
+    const handleWithdrawClick = async()=>{
       if(isWeb3Enabled){
-        setShowModal(true)
-      } else{
-        handleWalletNotConnected()
-      }
-      // const result = await getPriceFeed({onError: (e)=>{console.log(e);}})
-      // console.log(result);
-    }
-
-    const donate =async()=>{
-      console.log("Donate clicked");
-      if(isWeb3Enabled){
-        const dataReturned = await fund({
-          onSuccess: handleDonationSuccess,
-          onError: (error)=>{handleDonationFailure(error)
+        const result = await withdraw({
+          onSuccess: handleWithdrawSuccess,
+          onError: (error)=>{handleWithdrawFailure(error)
           }
         })
-        // if(dataReturned){
-        //   console.log(dataReturned);
-        //   alert("Donation successfull")
-        // }
-        // if(error){
-        //   console.log(error);
-        //   alert("Error donating. Try again")
-        // }
-      } else{
+        } else{
         handleWalletNotConnected()
       }
+      
+      // if(result){
+      //   console.log(result);
+      //   alert("Withdraw successful")
+      // }
+      // if(withdrawError){
+      //   console.log(withdrawError);
+      //   alert("Error withdrawing")
+      // }
     }
 
-    const handleDonationSuccess = async(tx)=>{
+    const handleWithdrawSuccess = async(tx)=>{
       try{
         tx.wait(1)
-      handleDonationNotification(tx)
+      handleWithdrawNotification(tx)
       } catch(e){
         console.log(e);
       }     
     }
 
-   
-    const handleDonationNotification =()=>{
+    const handleWithdrawNotification =()=>{
       dispatch({
         type: "success",
-        message: "Donation successful",
+        message: "Withdraw successful",
         title: "Transaction Notification",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     }
 
-    const handleDonationFailure =(e)=>{
+    const handleWithdrawFailure =(e)=>{
       dispatch({
         type: "error",
-        message: `Donation failed ${e.message}`,
+        message: `Withdraw failed ${e.message}`,
         title: "Transaction Notification",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     }
+
 
     const handleWalletNotConnected = ()=>{
       dispatch({
@@ -177,37 +154,14 @@ const index = ({project}) => {
 
           <div className={"flex flex-col mt-10 space-y-9"}>
           <button
-          onClick={handleDonateClick}
+         
+          onClick={handleWithdrawClick}
               class={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
-              >Donate</button>
+              >Withdraw</button>
 
           </div>
           
-              <Modal
-      cancelText="Cancel"
-      id="v-center"
-      isCentered = {true}
-      isVisible={showModal}
-      okText="Finally donate"
-      onCancel={function noRefCheck(){
-        setAmountToDonate("")
-        setShowModal(false)
-      }}
-      onCloseButtonPressed={function noRefCheck(){
-        setShowModal(false)
-      }}
-      onOk={donate}
-      title={<div style={{display: 'flex', gap: 10}}><Typography color="#68738D" variant="h3">Input Amount to donate</Typography></div>}
-    >
-      <Input
-      type="number"
-      onChange={()=>{
-        setAmountToDonate(ethers.utils.parseEther(event.target.value))
-      }}
-        label="Amount to donate in ETH"
-        width="100%"
-      />
-    </Modal>
+
           </div>
           </div>
           </div> {/*End of left item */}

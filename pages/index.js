@@ -32,24 +32,24 @@ export default function Home() {
 
 
   return (
-    <div className={"bg-lightBlack"}>
+    <div className={"bg-lightBlack mt-16"}>
       <NavBar />
 
       {/* Hero section */}
-      <section id='hero' className={"mt-8"}>
+      <section id='hero' className={"mt-16"}>
         {/* Top */}
         <container className="items-center px-6 mx-auto">
             <h1 className="text-white text-4xl font-bold text-center md:text-5xl ">
               Helping Hand
             </h1>
-            <p className="text-center text-white font-thin md:text-4xl mt-12">
+            <p className="text-center px-6 text-white font-thin md:text-4xl mt-12">
             You can donate to help people in need. Be rest assured that your money will get to the solicitor.
             You could also solicit for funds.
             </p>
-            <div class="flex justify-center">
+            <div className="flex justify-center">
             {/* <a
               href="#"
-              class="p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight"
+              className="p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight"
               >Get Started</a> */}
           </div>
 
@@ -263,7 +263,7 @@ export default function Home() {
         //                 }
         onClick={runTheContract}
                         
-                        class="  p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight "
+                        className="  p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight "
           >Get Started</button>
         </div>
         </div>

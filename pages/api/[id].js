@@ -3,6 +3,8 @@ import FundProject from '../../models/FundProject'
 
 dbConnect()
 
+// Was created incase i want to do something specific with ID. 
+// i guess i'm already doing it with the other one
 export default async (req, res) =>{
     const {
         query: {id},

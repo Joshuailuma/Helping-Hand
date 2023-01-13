@@ -42,8 +42,8 @@ function NavBar() {
 
           <div>
             <div
-              className={`flex-1 justify-self-center pb-3 md:block md:pb-0 md:mt-0 ${
-                navbar ? 'p-12 md:p-0 block' : 'hidden'
+              className={`flex-1 justify-self-center md:block md:pb-0 md:mt-0 ${
+                navbar ? 'md:p-0 block' : 'hidden'
               }`}
             >
               <ul className="h-1/6 md:h-auto items-center justify-center md:flex ">
@@ -57,13 +57,21 @@ function NavBar() {
                     Available Projects
                   </Link>
                 </li>
+                <li className={isWeb3Enabled ? "pb-6 text-xl text-white py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-purple-600  border-purple-900  md:hover:text-purple-600 md:hover:bg-transparent" : "hidden"}>
+                  <Link href="/my_projects" onClick={() => setNavbar(!navbar)}>
+                    My Projects
+                  </Link>
+                </li>
                 <li className="pb-6 text-xl text-white py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-purple-600  border-purple-900  md:hover:text-purple-600 md:hover:bg-transparent">
                   <Link href="/about" onClick={() => setNavbar(!navbar)}>
                     About Us
                   </Link>
                 </li>
                 <li>
+                  <div className="flex justify-center py-2">
                   <ConnectButton/>
+
+                  </div>
                 </li>
               </ul>
             </div>

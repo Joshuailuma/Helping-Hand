@@ -11,7 +11,7 @@ const FundProjectSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a description'],
         trim: true,
-        maxlength: [200, "Description is too long"]
+        maxlength: [5000, "Description is too long"]
     }, 
 
     imageUrl:{
@@ -27,6 +27,11 @@ const FundProjectSchema = new mongoose.Schema({
     endTime:{
         type: String,
         required: [true, 'Must specify end time'],
+    },
+
+    public_id:{
+        type: String,
+        required: [true, 'No public id found'],
     },
 })
 

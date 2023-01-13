@@ -11,13 +11,15 @@ import NavBar from '../components/NavBar';
 function start_funding() {
   const router = useRouter()
 
-const [form, setForm] = useState({title: '', description: '', imageUrl: '', address: '', endTime: ''})
+const [form, setForm] = useState({title: '', description: '', imageUrl: '', address: '', endTime: '', public_id: ''})
 const [imageSrc, setImageSrc] = useState();
 const [uploading, setUploading] = useState(false);
 const [isFile, setIsFile] = useState(false);
+const [imageIdCloudinary, setImageIdCloudinary] = useState('');
+
 const {chainId: chainId, isWeb3Enabled, account} = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
-const helpingHandAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+const helpingHandAddress = networkMapping[chainString][0]
 
 const dispatch = useNotification()
 
@@ -26,7 +28,8 @@ let formResult = {
   description: form.description,
   imageUrl : form.imageUrl,
   address: form.account,
-  endTime: form.endTime
+  endTime: form.endTime,
+  public_id: form.public_id
 }
 
 
@@ -82,13 +85,26 @@ async function handleOnFormSubmit(event) {
     }
   
     formData.append('upload_preset', 'my-uploads');
+
+    //Call the contract function
+    createProject()
+    if (error){
+      return;
+    }
   
     // What we get back from the upload
+    // didn't set up any api for this. Its jus this way
     const dataFromCloudinary = await fetch('https://api.cloudinary.com/v1_1/dreuuje6i/image/upload', {
       method: 'POST',
       body: formData
     }).then(r => r.json());
   
+    console.log("Cloudinary result is");
+    console.log(dataFromCloudinary);
+    // setImageIdCloudinary(dataFromCloudinary.public_id)
+    // Get public_id of image fom cloudinary data
+    formResult.public_id = dataFromCloudinary.public_id
+    // Get url to the image
     const cloudinaryResult = dataFromCloudinary.secure_url.toString()
     // setImageSrc(dataFromCloudinary.secure_url);
   
@@ -96,7 +112,21 @@ async function handleOnFormSubmit(event) {
     
     // Sets the imageUrl to a new value
     formResult.imageUrl = cloudinaryResult
-  createProject()
+
+    // Sets the address of form to a new value
+      formResult.address = account
+
+    // Upload form to mongodb
+    const {data} = await axios.post('/api/project', formResult);
+    if(data) {
+      handleNotification()
+       setForm({})
+      setImageSrc(null)
+    } else{
+      setForm({})
+      setImageSrc(null)
+      console.log("Couldn't upload to mongo");
+    }
   } else{
     dispatch({
       type: "error",
@@ -114,7 +144,6 @@ async function handleOnFormSubmit(event) {
  * Get details from form when field changes
  */
 const handleChange = (e) => {
-  console.log(form);
   setForm({
       ...form,
       [e.target.name]: e.target.value
@@ -122,21 +151,29 @@ const handleChange = (e) => {
 }
 
 /**
- * Send details to api to be stored in mongoDb
+ * Call the smartcontract function via metamask
  */
-const  createProject = async()=>{
-  formResult.address = account
+const createProject = async()=>{
+  // formResult.address = account
 
-  console.log(formResult);
+  // console.log(formResult);
   if (isWeb3Enabled){
     try {
-      const {data} = await axios.post('/api/project', formResult);
-      if(data){
+      // setUploading(true)
+
+      // const {data} = await axios.post('/api/project', formResult);
+      // if(data){
+        // console.log("Data from mongodb");
+        // console.log(data);
         const resultFromBlockchain = await startProject({
           onSuccess: handleStartProjectSuccess,
-          onError: (error)=>{handleStartProjectFailure(error)}
+          onError: (error)=>{
+            // deleteProject(data.data._id)
+
+            handleStartProjectFailure(error)
+          }
         })
-      }
+      // }
 
     } catch (error) {
       console.log("error");
@@ -146,6 +183,14 @@ const  createProject = async()=>{
     handleWalletNotConnected()
   }
   
+}
+
+//TO delete a project from mongoDb
+const deleteProject = async(id)=>{
+  console.log(id);
+ const result = await axios.delete('/api/project', id)
+ console.log("Deleted");
+ console.log(result);
 }
 
 const handleWalletNotConnected = ()=>{
@@ -162,7 +207,12 @@ const handleWalletNotConnected = ()=>{
 const handleStartProjectSuccess = async(tx)=>{
   try{
     tx.wait(1)
-  handleNotification(tx)
+
+    //If upload to blockchain is successful
+
+  // handleNotification(tx)
+  // setForm({})
+  // setImageSrc(null)
   } catch(e){
     console.log(e);
   }
@@ -215,10 +265,10 @@ return (
               <div className=" flex flex-col space-y-6">             
              {/* Name */}
 
-              <label  className="text-left  text-slate-200">Title</label>
+              <label  className="text-left text-slate-200">Title</label>
               <input onChange={handleChange} name={'title'} required maxLength={"40"}
                 type='text'
-                className={"px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"}
+                className={"px-6 py-3 align-middle bg-slate-600 text-white rounded-lg border-solid outline-double	w-80"}
                 placeholder="E.g Internally displaced persons"
               />
 
@@ -226,8 +276,8 @@ return (
 
                <label  className="text-left text-slate-200">Number of days donation would last</label>
               <input onChange={handleChange} name={'endTime'} required maxLength={"40"}
-                type='number'
-                className={"px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"}
+                type='number' min="1" step="1"   
+                className={"px-6 py-3 align-middle bg-slate-600 text-white rounded-lg border-solid outline-double	w-80"}
                 placeholder="E.g 23"
               />
 
@@ -235,12 +285,12 @@ return (
             {/* Description */}
 
 
-          <label htmlFor="description" className="text-left text-slate-200">The reason for this funding</label>
-              <textarea onChange={handleChange} name={'description'} required maxLength={"200"}
+          <label htmlFor="description" className="text-left text-white">The reason for this funding</label>
+              <textarea onChange={handleChange} name={'description'} required maxLength={"5000"}
                 rows="4" cols="50"
-                className={"px-6 py-3 rounded-lg border-solid outline-double	w-80"}
+                className={"px-6 py-3 rounded-lg border-solid bg-slate-600 text-white outline-double	w-80"}
                 placeholder="E.g In the IDP camp there are 20,000 persons..."
-              > </textarea> 
+              ></textarea> 
              <input onChange={handleOnFileChange} className={"text-slate-200"} type='file' name='file'></input>
 
              {imageSrc ? (<div>
