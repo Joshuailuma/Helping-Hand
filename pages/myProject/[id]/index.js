@@ -82,15 +82,6 @@ const Index = ({project}) => {
         } else{
         handleWalletNotConnected()
       }
-      
-      // if(result){
-      //   console.log(result);
-      //   alert("Withdraw successful")
-      // }
-      // if(withdrawError){
-      //   console.log(withdrawError);
-      //   alert("Error withdrawing")
-      // }
     }
 
     const handleWithdrawSuccess = async(tx)=>{
@@ -138,15 +129,27 @@ const Index = ({project}) => {
       setIsDeleting(true)
        //Use http://localhost:3000 for dev server
         // https://helping-hand-pi.vercel.app
-      const result = await axios.delete("http://localhost:3000/api/myProjectsApi", {params: {
+      const result = await axios.delete("https://helping-hand-pi.vercel.app/api/myProjectsApi", {params: {
         public_id: dataFromRouter.public_id,
         id: dataFromRouter._id,
     }
   })
   setIsDeleting(false)
-  console.log(result);
-
+  // console.log(result);
     }
+
+     /*
+    Set end date
+    */
+    // Date gotten from router
+    const date = new Date(dataFromRouter.createdAt)
+    // Get end time from router
+    const endTime = parseInt(dataFromRouter.endTime) //Convert it from string to int
+    // Add the endTime value to the previous date
+    date.setDate(date.getDate() + endTime); // Add the date
+    
+    const dueDate = date.toLocaleString('en-US', {day:'numeric', month: 'long', year:'numeric'})
+
     return (
     <>
     <NavBar/>
@@ -162,7 +165,10 @@ const Index = ({project}) => {
             title={dataFromRouter.title}
             description={dataFromRouter.description}>
             <div>
-           < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar}</h2>
+           < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar} ETH</h2>
+          </div>
+          <div>
+           < h2 className={"text-centertext-brightBlue"}>End time: {dueDate}</h2>
           </div>
              <Image loader={() => dataFromRouter.imageUrl}
             src={dataFromRouter.imageUrl} alt="image" height="320" width="400"/> 
@@ -194,7 +200,7 @@ const Index = ({project}) => {
           <div className={"md:w-1/4"}>
 
           <h1 className={"text-lg	my-11 text-slate-200"}> <Ada fontSize="50px"/>
-          You can withdraw your funds if the specified time is over</h1>
+          You can withdraw your funds if the end time is over</h1>
           <h1 className={"text-lg	text-slate-200"}> <AtomicApi fontSize="50px"/>
           Click the delete button to delete the project</h1>
 

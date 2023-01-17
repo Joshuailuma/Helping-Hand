@@ -33,7 +33,7 @@ const available_projects=({data}) =>{
       return(
         <div key={i._id}>
         <Link href={{pathname: `/project/${i._id}`, query: i}}>
-<Card className={"justify-center bg-black"}
+<Card className={"justify-center items-center content-center align-middle text-center bg-black"}
     title={i.title}
   >
     <div >
@@ -60,7 +60,7 @@ const available_projects=({data}) =>{
 export async function getServerSideProps(context) {
   //Use http://localhost:3000 for dev server
   // https://helping-hand-pi.vercel.app
-  let {data} = await axios.get("http://localhost:3000/api/projectApi")
+  let {data} = await axios.get("https://helping-hand-pi.vercel.app/api/projectApi")
   // We can only map through an array
   data = data.data
   return {

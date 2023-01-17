@@ -41,19 +41,6 @@ const Index = ({project}) => {
     },
     })
 
-    const { runContractFunction: withdraw, data: withdrawDataReturned,
-      error: withdrawError,
-      isLoading: withdrawIsLoading,
-      isFetching: withdrawIsFetching,
-     } = useWeb3Contract({
-      abi: contractAbi,
-      contractAddress: helpingHandAddress, // specify the networkId
-      functionName: "withdraw",
-      msgValue: amountToDonate,
-      params: {receiver: data.address
-    },
-    })
-
     const { runContractFunction: getAmountSoFar, data: getAmountSoFarDataReturned,
       error: getAmountSoFarError,
      } = useWeb3Contract({
@@ -63,14 +50,6 @@ const Index = ({project}) => {
       params: {anOwner: account
     },
     })
-
-    const { runContractFunction: getPriceFeed
-     } = useWeb3Contract({
-      abi: contractAbi,
-      contractAddress: helpingHandAddress, // specify the networkId
-      functionName: "getPriceFeed"
-    })
-
 
     
     async function handleAmountSoFar () {
@@ -82,20 +61,16 @@ const Index = ({project}) => {
       }
     }
 
-    
-
     const handleDonateClick = async()=>{
       if(isWeb3Enabled){
         setShowModal(true)
       } else{
         handleWalletNotConnected()
       }
-      // const result = await getPriceFeed({onError: (e)=>{console.log(e);}})
-      // console.log(result);
     }
 
     const donate =async()=>{
-      showModal(false)
+      setShowModal(false)
       setAmountToDonate("")
       if(isWeb3Enabled){
         const dataReturned = await fund({
@@ -148,15 +123,28 @@ const Index = ({project}) => {
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     }
+
+    /*
+    Set end date
+    */
+    // Date gotten from router
+    const date = new Date(data.createdAt)
+    // Get end time from router
+    const endTime = parseInt(data.endTime) //Convert it from string to int
+    // Add the endTime value to the previous date
+    date.setDate(date.getDate() + endTime); // Add the date
+    
+    const dueDate = date.toLocaleString('en-US', {day:'numeric', month: 'long', year:'numeric'})
+
     return (
     <>
     <NavBar/>
     <div className={"pt-11 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
-    <h1> Fund this Project</h1>
+    <h1> Donate to this Project</h1>
     </div>
     <section id='hero'>
         {/* Flex row makes it responsive */}
-        <div className="flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-12">
+        <div className="flex flex-col md:flex-row px-6 mx-auto space-y-0 md:space-y-0 pt-12">
           {/* Left item */}
           <div className='flex flex-col mb-32 space-y-12 md:w-3/4 mr-20'>
           <div className={"flex justify-center align-center"}>
@@ -166,7 +154,10 @@ const Index = ({project}) => {
             title={data.title}
             description={data.description}>
             <div>
-           < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar}</h2>
+           < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar} ETH</h2>
+          </div>
+          <div>
+           < h2 className={"text-centertext-brightBlue"}>End time: {dueDate}</h2>
           </div>
              <Image loader={() => data.imageUrl}
             src={data.imageUrl} alt="image" height="320" width="400"/> 
@@ -175,9 +166,8 @@ const Index = ({project}) => {
           <div className={"flex flex-col mt-10 space-y-9"}>
           <button
           onClick={handleDonateClick}
-              class={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
+              className={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
               >Donate</button>
-
           </div>
           
               <Modal
@@ -220,10 +210,7 @@ const Index = ({project}) => {
           </div>
         </div>
       </section>
-
     </>
-   
-
   )
 }
 

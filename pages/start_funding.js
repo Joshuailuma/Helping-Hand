@@ -281,7 +281,7 @@ return (
              {/* Name */}
 
               <label  className="text-left text-slate-200">Title</label>
-              <input onChange={handleChange} name={'title'} required maxLength={"40"}
+              <input onChange={handleChange} name={'title'} required maxLength={"100"}
                 type='text'
                 className={"px-6 py-3 align-middle bg-slate-600 text-white rounded-lg border-solid outline-double	w-80"}
                 placeholder="E.g Internally displaced persons"

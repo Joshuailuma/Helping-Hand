@@ -78,7 +78,7 @@ console.log(req.query.public_id);
                     await FundProject.deleteOne({id_: req.query.id})
                     console.log("SUCCESSFULLY DELETED PROJECT");
                     result = "Successfully deleted project"
-                    // Try not to send may res.status
+                    // Try not to send many res.status
                     res.status(201).json({success: true, message: 'Project deleted'})
                   
 

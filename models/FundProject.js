@@ -5,7 +5,7 @@ const FundProjectSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a title'],
         trim: true,
-        maxlength: [40, "Title is too long"]
+        maxlength: [100, "Title is too long"]
     }, 
     description:{
         type: String,
@@ -33,6 +33,9 @@ const FundProjectSchema = new mongoose.Schema({
         type: String,
         required: [true, 'No public id found'],
     },
+
+    createdAt: { type: Date, default: Date.now }
+
 })
 
 module.exports = mongoose.models.FundProject || mongoose.model('FundProject', FundProjectSchema);

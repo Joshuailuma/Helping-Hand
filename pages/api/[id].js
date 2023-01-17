@@ -9,7 +9,7 @@ export default async function Handler(req, res) {
     const {
         query: {id},
         method} = req;
-
+        
         switch (method){
             // WHen it is a get request with id
             case 'GET':
