@@ -1,13 +1,19 @@
 import dbConnect from '../../utils/dbconnect'
 import FundProject from '../../models/FundProject'
-import { cloudinary } from '../../utils/cloudinary'
+var cloudinary = require('cloudinary');
+//This config set up is important
+cloudinary.config({ 
+    cloud_name:  process.env.cloud_name,
+  api_key:  process.env.api_key,
+  api_secret: process.env.api_secret,
+  });
 
 dbConnect()
 
 export default async function Handler(req, res){
     let result
     const {method, query: address} = req;
-console.log(address);
+console.log(req.query.public_id);
     switch (method){
 
         case 'GET':
@@ -16,6 +22,8 @@ console.log(address);
                 const project = await FundProject.find(address)
                 res.status(200).json({success: true, data: project})
                 result = project
+                console.log("Result from get request");
+
                 return;
                 //FIX THIS ACCOUNT THING
             } catch(error) {
@@ -43,30 +51,45 @@ console.log(address);
 
             case 'DELETE':
                 try {
-                    const project = await FundProject.findById(id)
-                    console.log("project is");
+                    //Get query parameter anad delete from cloudinary
+                    // according to the query parameter public_id
+                    if(req.query.public_id !== "undefined"){
+                        console.log("Deleting from cloudinary");
 
-                    console.log(project);
-                    
-                    const imgId = project.public_id;
-                    console.log("Image id is");
-                    console.log(imgId);
+                        let result
+                       await cloudinary.v2.uploader.destroy(req.query.public_id)
+                       .then(r=>result=r);;
+                        console.log("Deleted from cloudinary");
+                        console.log(result);
+                        if ({result} == "ok"){
+                            console.log("Hehe");
+                            // res.status(201).json({success: true, message: "Deleted successfully"})
+                        } else{
+                            console.log("Else");
+                            result = "Error deleting"
+                            // res.status(400).json({success: false, message: 'Error deleting'})
 
-                    if (imgId) {
-                        await cloudinary.uploader.destroy(imgId);
+                        }
                     }
 
-                    const deletedProject = await FundProject.deleteOne({id_: id})
-                    
-                    //If that note doesnt exist
-                    if (!deletedProject){
-                        res.status(400).json({success: false})
-                    }
-                    //Send an empty data in the response 
-                    res.status(201).json({success: true, data: {}})
+                   if(req.query.id !== "undefined"){
+                    console.log("Deleting from mongo");
+
+                    await FundProject.deleteOne({id_: req.query.id})
+                    console.log("SUCCESSFULLY DELETED PROJECT");
+                    result = "Successfully deleted project"
+                    // Try not to send may res.status
+                    res.status(201).json({success: true, message: 'Project deleted'})
+                  
+
+                   }
+
                 } catch (error) {
-                    res.status(400).json({success: false})
+                    console.log("catch error");
+                    console.log(error);
+                    res.status(400).json({success: false, message: "Something wen wrong"})
                 }
+                break;
             default:
                 res.status(400).json({success: false})
                 console.log('Default error');

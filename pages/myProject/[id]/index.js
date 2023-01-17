@@ -11,15 +11,17 @@ import {Ada} from '@web3uikit/icons'
 import {AtomicApi} from '@web3uikit/icons'
 import networkMapping from "../../../constants/networkMapping.json"
 import NavBar from "../../../components/NavBar";
+import axios from "axios";
 
 const Index = ({project}) => {
     const router = useRouter()
-    const data = router.query
+    const dataFromRouter = router.query
     const {chainId, isWeb3Enabled, account} = useMoralis()
     const chainString = chainId ? parseInt(chainId).toString() : "31337"
     const helpingHandAddress = networkMapping[chainString][0]
     const [amountSoFar, setAmountSoFar] = useState("")
     const dispatch = useNotification()
+    const [isDeleting, setIsDeleting] = useState(false)
 
    useEffect(()=>{
     if(isWeb3Enabled){
@@ -36,7 +38,7 @@ const Index = ({project}) => {
       abi: contractAbi,
       contractAddress: helpingHandAddress, // specify the networkId
       functionName: "withdraw",
-      params: {receiver: data.address
+      params: {receiver: dataFromRouter.address
     },
     })
 
@@ -130,37 +132,60 @@ const Index = ({project}) => {
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     }
+
+
+    async function handleDeleteClick(){
+      setIsDeleting(true)
+       //Use http://localhost:3000 for dev server
+        // https://helping-hand-pi.vercel.app
+      const result = await axios.delete("http://localhost:3000/api/myProjectsApi", {params: {
+        public_id: dataFromRouter.public_id,
+        id: dataFromRouter._id,
+    }
+  })
+  setIsDeleting(false)
+  console.log(result);
+
+    }
     return (
     <>
     <NavBar/>
     <section id="hero">
         {/* Flex row makes it responsive */}
-        <container className={"flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-28"}>
+        <div className={"flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-28"}>
           {/* Left item */}
           <div className={"flex flex-col mb-32 space-y-12 md:w-3/4 mr-20"}>
           <div className={"flex justify-center align-center"}>
 
     <div>
           <Card className={"max-w-md justify-center"} onClick={""}
-            title={data.title}
-            description={data.description}>
+            title={dataFromRouter.title}
+            description={dataFromRouter.description}>
             <div>
            < h2 className={"text-centertext-brightBlue"}>Amount gotten: {amountSoFar}</h2>
           </div>
-             <Image loader={() => data.imageUrl}
-            src={data.imageUrl} alt="image" height="320" width="400"/> 
+             <Image loader={() => dataFromRouter.imageUrl}
+            src={dataFromRouter.imageUrl} alt="image" height="320" width="400"/> 
            </Card>
 
           <div className={"flex flex-col mt-10 space-y-9"}>
           <button
          
           onClick={handleWithdrawClick}
-              class={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
+              className={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
               >Withdraw</button>
 
           </div>
-          
 
+          <div className={"flex flex-col mt-10 space-y-9"}>
+          <button
+         
+          onClick={handleDeleteClick}
+              className={isDeleting ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight mx-auto"}
+              >Delete project</button>
+
+          </div>
+          
           </div>
           </div>
           </div> {/*End of left item */}
@@ -169,17 +194,14 @@ const Index = ({project}) => {
           <div className={"md:w-1/4"}>
 
           <h1 className={"text-lg	my-11 text-slate-200"}> <Ada fontSize="50px"/>
-          Donate to help accomplish projects</h1>
+          You can withdraw your funds if the specified time is over</h1>
           <h1 className={"text-lg	text-slate-200"}> <AtomicApi fontSize="50px"/>
-          Only the creator can withdraw after the specified timeframe is over</h1>
+          Click the delete button to delete the project</h1>
 
           </div>
-        </container>
+        </div>
       </section>
-
     </>
-   
-
   )
 }
 

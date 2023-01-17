@@ -33,20 +33,6 @@ let formResult = {
   public_id: form.public_id
 }
 
-
-// useEffect(() => {
-//   if (isWeb3Enabled) {
-//       updateUIValues()
-//   }
-// }, [isWeb3Enabled])
-
-// const { runContractFunction: getOwner } = useWeb3Contract({
-//   abi: abi,
-//   contractAddress: helpingHandAddress, // specify the networkId
-//   functionName: "getOwner",
-//   params: {},
-// })
-
 /**
  * Make the image chosen display in our UI
  * @param {*} changeEvent 
@@ -88,45 +74,53 @@ async function handleOnFormSubmit(event) {
     formData.append('upload_preset', 'my-uploads');
 
     //Call the contract function
-    createProject()
-    if (error){
+    let theResult = await createProject()
+    console.log("Blockchain result is", theResult);
+    if (theResult == "error"){
+        setUploading(false)
       return;
-    }
-  
-    // What we get back from the upload
-    // didn't set up any api for this. Its jus this way
-    const dataFromCloudinary = await fetch('https://api.cloudinary.com/v1_1/dreuuje6i/image/upload', {
-      method: 'POST',
-      body: formData
-    }).then(r => r.json());
-  
-    console.log("Cloudinary result is");
-    console.log(dataFromCloudinary);
-    // setImageIdCloudinary(dataFromCloudinary.public_id)
-    // Get public_id of image fom cloudinary data
-    formResult.public_id = dataFromCloudinary.public_id
-    // Get url to the image
-    const cloudinaryResult = dataFromCloudinary.secure_url.toString()
-    // setImageSrc(dataFromCloudinary.secure_url);
-  
-    console.log(cloudinaryResult);
-    
-    // Sets the imageUrl to a new value
-    formResult.imageUrl = cloudinaryResult
-
-    // Sets the address of form to a new value
-      formResult.address = account
-
-    // Upload form to mongodb
-    const {data} = await axios.post('/api/project', formResult);
-    if(data) {
-      handleNotification()
-       setForm({})
-      setImageSrc(null)
     } else{
-      setForm({})
-      setImageSrc(null)
-      console.log("Couldn't upload to mongo");
+
+      // What we get back from the upload
+      // didn't set up any api for this. Its jus this way
+      const dataFromCloudinary = await fetch('https://api.cloudinary.com/v1_1/dreuuje6i/image/upload', {
+        method: 'POST',
+        body: formData
+      }).then(r => r.json());
+    
+      console.log("Cloudinary result is");
+      console.log(dataFromCloudinary);
+      // setImageIdCloudinary(dataFromCloudinary.public_id)
+      // Get public_id of image fom cloudinary data
+      formResult.public_id = dataFromCloudinary.public_id
+      // Get url to the image
+      const cloudinaryResult = dataFromCloudinary.secure_url.toString()
+      // setImageSrc(dataFromCloudinary.secure_url);
+    
+      console.log(cloudinaryResult);
+      
+      // Sets the imageUrl to a new value
+      formResult.imageUrl = cloudinaryResult
+  
+      // Sets the address of form to a new value
+        formResult.address = account
+
+      console.log(formResult, "Form result");
+      // Upload form to mongodb
+      const {data} = await axios.post('/api/projectApi', formResult);
+      console.log("Mongodb data", data);
+          setUploading(false)
+
+      if(data) {
+        handleNotification()
+         setForm({})
+        setImageSrc(null)
+      } else{
+        console.log("Could not upload to mongo db")
+        setForm({})
+        setImageSrc(null)
+        console.log("Couldn't upload to mongo");
+      }
     }
   } else{
     dispatch({
@@ -137,6 +131,7 @@ async function handleOnFormSubmit(event) {
       icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
     })
   }
+  
  
 
 }
@@ -156,6 +151,7 @@ const handleChange = (e) => {
  */
 const createProject = async()=>{
   // formResult.address = account
+  let result
 
   // console.log(formResult);
   if (isWeb3Enabled){
@@ -174,22 +170,30 @@ const createProject = async()=>{
             handleStartProjectFailure(error)
           }
         })
+
+        if(resultFromBlockchain){
+          doNotLeavePage() // Show a notification
+          result = resultFromBlockchain
+        }
       // }
 
     } catch (error) {
       console.log("error");
+      result = "error"
       }
-    setUploading(false)
+    // setUploading(false)
   } else{
+    result = "error"
     handleWalletNotConnected()
   }
+  return result
   
 }
 
 //TO delete a project from mongoDb
 const deleteProject = async(id)=>{
   console.log(id);
- const result = await axios.delete('/api/project', id)
+ const result = await axios.delete('/api/myProjectApi', id)
  console.log("Deleted");
  console.log(result);
 }
@@ -225,6 +229,16 @@ const handleNotification =()=>{
     type: "success",
     message: "Project creation succesfull",
     title: "Transaction Notification",
+    position: "topR",
+    icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+  })
+}
+
+const doNotLeavePage =()=>{
+  dispatch({
+    type: "info",
+    message: "Please wait for Metamask confirmation, DO NOT LEAVE THIS PAGE",
+    title: "Waiting for confirmation",
     position: "topR",
     icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
   })

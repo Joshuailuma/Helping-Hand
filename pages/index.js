@@ -32,9 +32,9 @@ export default function Home() {
     <div className={"bg-lightBlack mt-16 md:mt-28"}>
       <NavBar />
       {/* Hero section */}
-      <section id='hero' className={"mt-16"}>
+      <section id='hero' className={"mt-24"}>
         {/* Top */}
-        <container className="items-center px-6 mx-auto">
+        <div className="items-center px-6 mx-auto">
             <h1 className="text-white text-4xl font-bold text-center md:text-5xl ">
               Helping Hand
             </h1>
@@ -54,7 +54,7 @@ export default function Home() {
           {/* <Image src="/help_me.jpg" alt="illustration-intro.svg" width={580} height={525} /> */}
           </div>
 
-        </container>
+        </div>
       </section>
 
       {/* Features section */}

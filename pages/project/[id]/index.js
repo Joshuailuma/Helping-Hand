@@ -95,21 +95,15 @@ const Index = ({project}) => {
     }
 
     const donate =async()=>{
-      console.log("Donate clicked");
+      showModal(false)
+      setAmountToDonate("")
       if(isWeb3Enabled){
         const dataReturned = await fund({
           onSuccess: handleDonationSuccess,
           onError: (error)=>{handleDonationFailure(error)
           }
         })
-        // if(dataReturned){
-        //   console.log(dataReturned);
-        //   alert("Donation successfull")
-        // }
-        // if(error){
-        //   console.log(error);
-        //   alert("Error donating. Try again")
-        // }
+        
       } else{
         handleWalletNotConnected()
       }
@@ -157,9 +151,12 @@ const Index = ({project}) => {
     return (
     <>
     <NavBar/>
+    <div className={"pt-11 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
+    <h1> Fund this Project</h1>
+    </div>
     <section id='hero'>
         {/* Flex row makes it responsive */}
-        <container className="flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-28">
+        <div className="flex flex-col md:flex-row  px-6 mx-auto space-y-0 md:space-y-0 pt-12">
           {/* Left item */}
           <div className='flex flex-col mb-32 space-y-12 md:w-3/4 mr-20'>
           <div className={"flex justify-center align-center"}>
@@ -200,7 +197,7 @@ const Index = ({project}) => {
       title={<div style={{display: 'flex', gap: 10}}><Typography color="#68738D" variant="h3">Input Amount to donate</Typography></div>}
     >
       <Input
-      type="number"
+      type="number" step=".01" min="0" value="0"
       onChange={()=>{
         setAmountToDonate(ethers.utils.parseEther(event.target.value))
       }}
@@ -221,7 +218,7 @@ const Index = ({project}) => {
           Only the creator can withdraw after the specified timeframe is over</h1>
 
           </div>
-        </container>
+        </div>
       </section>
 
     </>

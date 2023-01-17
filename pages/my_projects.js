@@ -6,13 +6,15 @@ import {Circles} from "react-loader-spinner";
 import {Card} from '@web3uikit/core';
 import NavBar from '../components/NavBar';
 import { useMoralis} from 'react-moralis';
+import { useRouter } from 'next/router';
 
 function My_projects() {
-
     const [loading, setLoading] = useState(true)
     const [myProjects, setMyProjects] = useState([])
 
     const {isWeb3Enabled, account} = useMoralis()
+    const router = useRouter()
+    const data = router.query
     // Set data to false to render the data page
     useEffect(()=>{
         setLoading(false)
@@ -22,7 +24,8 @@ function My_projects() {
       async function fetchData() {
         // console.log(account);
         //Use http://localhost:3000 for dev server
-        let {data} = await axios.get("https://helping-hand-pi.vercel.app/api/myProjectsApi", {params: {
+        // https://helping-hand-pi.vercel.app
+        let {data} = await axios.get("http://localhost:3000/api/myProjectsApi", {params: {
           address: account
       }
       })
@@ -78,8 +81,12 @@ console.log(myProjects);
       
     ) : (
       <>
-      <div className={"bg-lightBlack text-white grid grid-cols-2 gap-4 md:grid-cols-4 pt-36 px-8"}>
       <NavBar/>
+      <div className={"pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
+    <h1> Your Projects</h1>
+    </div>
+
+      <div className={"bg-lightBlack text-white grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4 pt-14 px-8"}>
       { isWeb3Enabled ? ( !myProjects ?( 
          <div className={"pt-48"}>No Projects right now...</div>
             ) : (

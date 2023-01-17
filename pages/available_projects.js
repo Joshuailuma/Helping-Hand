@@ -1,4 +1,3 @@
-import { useState, useEffect, Suspense } from 'react'
 import Image from 'next/image'
 import axios from "axios";
 import Link from 'next/link';
@@ -20,8 +19,13 @@ const available_projects=({data}) =>{
   // Show the circle if fetching
   return (
     <>
-    <div className={"bg-lightBlack text-white grid grid-cols-2 gap-4 md:grid-cols-4 pt-36 px-8"}>
     <NavBar/>
+    <div className={"pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
+    <h1> Available Projects that can be funded</h1>
+
+    </div>
+    <div className={"bg-lightBlack text-white grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4 pt-14 px-8"}>
+
     { !data ? ( 
       <div className={"pt-48"}>No Project right now...</div>
         ):( data.map((i) => {
@@ -55,7 +59,8 @@ const available_projects=({data}) =>{
 
 export async function getServerSideProps(context) {
   //Use http://localhost:3000 for dev server
-  let {data} = await axios.get("https://helping-hand-pi.vercel.app/api/projectApi")
+  // https://helping-hand-pi.vercel.app
+  let {data} = await axios.get("http://localhost:3000/api/projectApi")
   // We can only map through an array
   data = data.data
   return {
