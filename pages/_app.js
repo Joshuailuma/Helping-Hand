@@ -33,7 +33,8 @@ function MyApp({ Component, pageProps }) {
      {loading ? (
        <MoralisProvider initializeOnMount={false}>
        <NotificationProvider>
-       <div className={"flex my-56 justify-center align-center"}>
+        <>
+       <div className={"flex mt-56 justify-center align-center"}>
         <NavBar/>
         <Circles
         height="80"
@@ -44,8 +45,9 @@ function MyApp({ Component, pageProps }) {
         wrapperClass=""
         visible={true}
       />
-      <div className={"font-serif ml-4"}>Please wait or refresh after a long time</div>
       </div>
+      <div className={"flex mt-6 justify-center align-center font-serif ml-4"}>Please wait or refresh after a long time</div>
+      </>
        </NotificationProvider>   
      </MoralisProvider>
         
