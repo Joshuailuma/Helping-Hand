@@ -24,10 +24,6 @@ export default function Home() {
     },
 })
 
- async function runTheContract() { 
-    const i = await getOwner()
-}
-
   return (
     <div className={"bg-lightBlack mt-16 md:mt-28"}>
       <NavBar />
@@ -60,7 +56,7 @@ export default function Home() {
       {/* Features section */}
       <section id="features">
 
-        <div className={"text-darkGrayishBlue mt-20 mb-20 text-center text-4xl font-semibold"}>We provide a decentralized platform to help people in need</div>
+        <div className={"text-darkGrayishBlue mt-20 mb-20 text-center text-3xl font-semibold"}>We provide a decentralized platform to help people in need</div>
         {/* space mean space between the items */}
 
         <div className="container flex flex-col px-4 mx-auto mt-10 space-y-12 md:space-y-0 md:flex-row">
@@ -70,7 +66,7 @@ export default function Home() {
           <div className="max-w-md text-4xl font-bold flex justify-center md:justify-start md:text-left">
           <FaBeer /> 
           </div>
-          <h1 className=" text-center text-3xl text-darkGrayishBlue md:text-left">Start a funding project</h1>
+          <h1 className=" text-center text-2xl text-darkGrayishBlue md:text-left">Start a funding project</h1>
 
           <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
@@ -116,7 +112,7 @@ export default function Home() {
           <div className="max-w-md text-4xl flex justify-center md:justify-start font-bold md:text-left">
           <FaBuffer />
           </div>
-          <h1 className=" text-center text-3xl text-darkGrayishBlue md:text-left">Get donations after a specific time</h1>
+          <h1 className=" text-center text-2xl text-darkGrayishBlue md:text-left">Get donations after a specific time</h1>
 
           <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
@@ -161,7 +157,7 @@ export default function Home() {
           <div className="max-w-md text-4xl flex justify-center md:justify-start font-bold md:text-left">
           <FaGrinAlt />
           </div>
-          <h1 className="text-center text-3xl text-darkGrayishBlue md:text-left">Help people in need</h1>
+          <h1 className="text-center text-2xl text-darkGrayishBlue md:text-left">Help people in need</h1>
           <div className="flex justify-center md:justify-start items-center space-x-2">
               <div className="px-2 py-2 text-white rounded-full md:py-2 bg-brightBlue">
                 
@@ -210,14 +206,14 @@ export default function Home() {
 
       <section id="testimonials">
         {/*Container to hold Heading and testemonial block*/}
-        <div className="max-w-6xl px-5 mx-auto mt-32 text-center">
+        <div className="max-w-6xl mb-8 px-5 mx-auto mt-16 text-center">
           {/* Heading */}
-          <h2 className="text-4xl font-bold text-center text-white">
+          {/* <h2 className="text-4xl font-bold text-center text-white">
             Recently listed projects
-          </h2>
+          </h2> */}
 
         {/* Testimonial. Flex is like flexbox */}
-        <div className={"bg-lightBlack flex flex-col mt-24 md:flex-row md:space-x-6"}>
+        <div className={"bg-lightBlack space-y-6 md:space-y-0 flex flex-col mt-24 md:flex-row md:space-x-6"}>
           {/* Testimonial 1. For medium screen we will take 1-third of each testimonial */}
           <div className={"bg-lightBlack flex flex-col items-center md:flex md:w-1/3"}>
           {/* Image div */}
@@ -243,28 +239,20 @@ export default function Home() {
           <div className="flex flex-col items-center rounded-lg bg-lightBlack md:w-1/3">
          {/* Image div */}
          <div className="rounded truncate">
-          <Image src="/help_me.jpg" alt="illustration-intro.svg" width={300} height={300} />
+          <Image src="/satisfaction.jpg" alt="illustration-intro.svg" width={300} height={300} />
           </div>
-          <h5 className="text-lg text-white font-bold"> Donate to help people in need</h5>
+          <h5 className="text-lg text-white font-bold"> Get satisfaction</h5>
           </div>
         </div>
 
         {/* Button */}
-        <div className="my-16">
+        {/* <div className="my-16">
         <button
-        //  onClick={async () =>
-        //                     await getOwner({
-        //                         // onComplete:
-        //                         // onError:
-        //                         onSuccess: handleSuccess,
-        //                         onError: (error) => console.log(error),
-        //                     })
-        //                 }
         onClick={runTheContract}
                         
                         className="  p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight "
           >Get Started</button>
-        </div>
+        </div> */}
         </div>
       </section>
 

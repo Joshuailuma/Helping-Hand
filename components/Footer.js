@@ -1,6 +1,40 @@
+import axios from "axios";
 import Link from "next/link"
+import { useRef, useState} from 'react'
+import { useNotification } from '@web3uikit/core';
+import { Bell } from '@web3uikit/icons';
 
 function Footer() {
+  const [message, setMessage] = useState("")
+  const dispatch = useNotification()
+  const formRef = useRef()
+
+
+  async function handleSubmit(e) {
+  e.preventDefault();
+  formRef.current.reset();
+
+  let {status} = await axios.post("/api/contact", {
+    message: message,
+  })
+  if(status == "200"){
+    dispatch({
+      type: "success",
+      message: `Message successfully sent`,
+      title: "Notification",
+      position: "topR",
+      icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+    })
+  } else{
+     dispatch({
+    type: "error",
+    message: `Couldn't send message`,
+    title: "Notification",
+    position: "topR",
+    icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+  })
+  }
+}
   return (
     <footer className="bg-veryDarkBlue ">
     {/* Flex container */}
@@ -27,9 +61,11 @@ function Footer() {
 
       {/* Input container */}
       <div className="flex flex-col justify-between">
-        <form action="">
+        <form onSubmit={handleSubmit} ref={formRef}>
           <div className="flex space-x-3">
-            <input type="text" placeholder='Send us a message' className="flex-1 px-4 rounded-full focus:outline-none" />
+            <input onChange={()=>{
+              setMessage(event.target.value)
+              }} required={true} type="text" placeholder='Send us a message' className="flex-1 px-4 rounded-full focus:outline-none" />
             <button className={"p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight"}> 
             Send
             </button>
@@ -42,5 +78,6 @@ function Footer() {
 
   )
 }
+
 
 export default Footer

@@ -4,7 +4,6 @@ import Link from 'next/link';
 import {Circles} from "react-loader-spinner";
 import {Card} from '@web3uikit/core';
 import NavBar from '../components/NavBar';
-import { useMoralis} from 'react-moralis';
 
 const available_projects=({data}) =>{
 
