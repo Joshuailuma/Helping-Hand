@@ -82,7 +82,7 @@ console.log(myProjects);
     ) : (
       <>
       <NavBar/>
-      <div className={"pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
+      <div className={"px-8 pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
     <h1> Your Projects</h1>
     </div>
 
