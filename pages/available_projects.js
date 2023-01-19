@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import axios from "axios";
 import Link from 'next/link';
-import {Circles} from "react-loader-spinner";
 import {Card} from '@web3uikit/core';
 import NavBar from '../components/NavBar';
 
