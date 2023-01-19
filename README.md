@@ -66,4 +66,8 @@ yarn dev
 3. Click on a project of your choice
 4. Click on the 'Withdraw button' to withdraw all the funds donated to the project. You can only withdraw after the time specifed for the cause of project has elapsed
 
+## Contributor
+
+Benedicta Ijisesan (https://github.com/cutedicta)
+
 ## License
