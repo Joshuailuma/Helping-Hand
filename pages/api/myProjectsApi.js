@@ -81,7 +81,7 @@ console.log(req.query.public_id);
                     // Try not to send many res.status
                     res.status(201).json({success: true, message: 'Project deleted'})
                   
-
+                    return;
                    }
 
                 } catch (error) {

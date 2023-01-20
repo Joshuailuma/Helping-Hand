@@ -45,7 +45,7 @@ yarn dev
 ### How to create a funding project
 
 1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
-2. Get some GoerliETH
+2. Get some GoerliETH from [Goerlifaucet](https://goerlifaucet.com/)
 3. Navigate to `Create project` page
 4. Fill in the form and upload an image that is related to the project
 
