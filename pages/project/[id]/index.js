@@ -139,7 +139,7 @@ const Index = ({project}) => {
     return (
     <>
     <NavBar/>
-    <div className={"pt-11 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
+    <div className={"pt-11 text-white flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
     <h1> Donate to this Project</h1>
     </div>
     <section id='hero'>
