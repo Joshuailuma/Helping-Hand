@@ -64,7 +64,7 @@ export default function Home() {
           <div className="flex flex-col space-y-6 md:w-1/3">
             {/* For icons */}
           <div className="max-w-md text-4xl font-bold flex justify-center md:justify-start md:text-left">
-          <FaBeer /> 
+          <FaBeer className="text-darkGrayishBlue" /> 
           </div>
           <h1 className=" text-center text-2xl text-darkGrayishBlue md:text-left">Start a funding project</h1>
 
@@ -110,7 +110,7 @@ export default function Home() {
           <div className="flex flex-col space-y-6 md:w-1/3">
             {/* For icons */}
           <div className="max-w-md text-4xl flex justify-center md:justify-start font-bold md:text-left">
-          <FaBuffer />
+          <FaBuffer className="text-darkGrayishBlue"/>
           </div>
           <h1 className=" text-center text-2xl text-darkGrayishBlue md:text-left">Get donations after a specific time</h1>
 
@@ -155,7 +155,7 @@ export default function Home() {
 <div className="flex flex-col space-y-6 md:w-1/3">
             {/* For icons */}
           <div className="max-w-md text-4xl flex justify-center md:justify-start font-bold md:text-left">
-          <FaGrinAlt />
+          <FaGrinAlt className="text-darkGrayishBlue"/>
           </div>
           <h1 className="text-center text-2xl text-darkGrayishBlue md:text-left">Help people in need</h1>
           <div className="flex justify-center md:justify-start items-center space-x-2">

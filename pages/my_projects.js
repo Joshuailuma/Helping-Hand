@@ -49,7 +49,7 @@ console.log(myProjects);
 
     if(myProjects.length == 0) {
       console.log("hahaha");
-      return (<div className={"flex my-56 justify-center align-center"}>
+      return (<div className={"flex text-white my-56 justify-center align-center"}>
         <NavBar/>
         <h1 className={"text-2xl"}> No project present</h1>
       </div>)
@@ -82,7 +82,7 @@ console.log(myProjects);
     ) : (
       <>
       <NavBar/>
-      <div className={"px-8 pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
+      <div className={"px-8 text-white pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
     <h1> Your Projects</h1>
     </div>
 

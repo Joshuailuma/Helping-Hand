@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps }) {
         visible={true}
       />
       </div>
-      <div className={"flex mt-6 justify-center align-center font-serif ml-4"}>Please wait or refresh after a long time</div>
+      <div className={"flex mt-6 justify-center align-center text-white font-serif ml-4"}>Please wait or refresh after a long time</div>
       </>
        </NotificationProvider>   
      </MoralisProvider>

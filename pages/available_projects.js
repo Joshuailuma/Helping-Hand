@@ -7,7 +7,7 @@ import NavBar from '../components/NavBar';
 const available_projects=({data}) =>{
 
   if(data.length == 0) {
-    return (<div className={"flex my-56 justify-center align-center"}>
+    return (<div className={"flex my-56 text-white justify-center align-center"}>
       <NavBar/>
       <h1 className={"text-2xl"}> No project present</h1>
     </div>)
@@ -18,7 +18,7 @@ const available_projects=({data}) =>{
   return (
     <>
     <NavBar/>
-    <div className={"px-8 pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
+    <div className={"px-8 text-white pt-9 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
     <h1> Available Projects that can be funded</h1>
 
     </div>

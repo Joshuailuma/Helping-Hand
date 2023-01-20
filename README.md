@@ -49,6 +49,8 @@ yarn dev
 3. Navigate to `Create project` page
 4. Fill in the form and upload an image that is related to the project
 
+![screenshot1](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
+
 ### How to donate to a project
 
 1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
@@ -59,6 +61,8 @@ yarn dev
 
 4. Click on the 'Donate button' and type in the amout of ETH you'd love to donate
 
+![screenshot2](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot2.png?raw=true)
+
 ### How to withdraw donated funds from project
 
 1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
@@ -66,8 +70,10 @@ yarn dev
 3. Click on a project of your choice
 4. Click on the 'Withdraw button' to withdraw all the funds donated to the project. You can only withdraw after the time specifed for the cause of project has elapsed
 
+![screenshot3](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot3.png?raw=true)
+
 ## Contributor
 
-Benedicta Ijisesan (https://github.com/cutedicta)
+[Benedicta Ijisesan](https://github.com/cutedicta)
 
 ## License
