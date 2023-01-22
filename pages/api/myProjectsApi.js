@@ -87,7 +87,8 @@ console.log(req.query.public_id);
                 } catch (error) {
                     console.log("catch error");
                     console.log(error);
-                    res.status(400).json({success: false, message: "Something wen wrong"})
+                    result = error
+                    res.status(400).json({success: false, message: error})
                 }
                 break;
             default:
