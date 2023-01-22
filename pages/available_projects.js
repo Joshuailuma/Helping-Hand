@@ -24,10 +24,10 @@ const available_projects=({data}) =>{
     </div>
     <div className={"bg-lightBlack text-white grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4 pt-14 px-8"}>
 
-    { !data ? ( 
+    {!data ? ( 
       <div className={"pt-48"}>No Project right now...</div>
         ):( data.map((i) => {
-      // A full project card
+      console.log(i.imageUrl);
       return(
         <div key={i._id}>
         <Link href={{pathname: `/project/${i._id}`, query: i}}>
