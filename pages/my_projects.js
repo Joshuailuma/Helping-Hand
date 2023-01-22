@@ -30,7 +30,7 @@ function My_projects() {
         address: account
       }
     })
-    // console.log(data.data);
+    console.log(data);
     // Result actually looks like this 
     //{
     // success: true,
