@@ -24,10 +24,12 @@ const available_projects=({data}) =>{
     </div>
     <div className={"bg-lightBlack text-white grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4 pt-14 px-8"}>
 
-    {!data ? ( 
+    {data.length == 0 ? ( 
       <div className={"pt-48"}>No Project right now...</div>
         ):( data.map((i) => {
+      console.log(i.title);
       console.log(i.imageUrl);
+
       return(
         <div key={i._id}>
         <Link href={{pathname: `/project/${i._id}`, query: i}}>
@@ -36,6 +38,7 @@ const available_projects=({data}) =>{
   >
     <div >
       <Image 
+      loader={() => data.imageUrl}
         height={180}
         src={i.imageUrl}
         width={180}
@@ -58,7 +61,7 @@ const available_projects=({data}) =>{
 export async function getServerSideProps(context) {
   //Use http://localhost:3000 for dev server
   // https://helping-hand-pi.vercel.app
-  let {data} = await axios.get("https://helping-hand-pi.vercel.app/api/projectApi")
+  let {data} = await axios.get("http://localhost:3000/api/projectApi")
   // We can only map through an array
   data = data.data
   return {
