@@ -44,10 +44,6 @@ function My_projects() {
     }
   }
 
-
-  console.log(typeof (myProjects));
-  console.log(myProjects);
-
   if (myProjects.length == 0) {
     console.log("hahaha");
     return (<div className={"flex text-white my-56 justify-center align-center"}>
