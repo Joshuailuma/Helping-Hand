@@ -132,7 +132,7 @@ const Index = ({ project }) => {
     setIsDeleting(true)
     //Use http://localhost:3000 for dev server
     // https://helping-hand-pi.vercel.app
-    const { data } = await axios.delete("http://localhost:3000/api/myProjectsApi", {
+    const { data } = await axios.delete("https://helping-hand-pi.vercel.app/api/myProjectsApi", {
       params: {
         public_id: dataFromRouter.public_id,
         id: dataFromRouter._id,
