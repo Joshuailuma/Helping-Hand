@@ -9,7 +9,7 @@ import NavBar from '../components/NavBar'
       <NavBar/>
       <section id='hero'>
         {/* Flex row makes it responsive */}
-        <container className="flex flex-col-reverse md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
+        <div className="flex flex-col-reverse md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
           {/* Left item */}
           <div className='flex flex-col mb-32 space-y-12 md:w-1/2'>
             <h1 className="max-w-md text-4xl text-white font-bold text-center md:text-5xl md:text-left">
@@ -27,7 +27,7 @@ import NavBar from '../components/NavBar'
           <Image src="/support_woman.jpeg" alt="support_woman" width={580} height={525} />
 
           </div>
-        </container>
+        </div>
       </section>
 
 
