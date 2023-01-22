@@ -13,7 +13,7 @@ import networkMapping from "../../../constants/networkMapping.json"
 import NavBar from "../../../components/NavBar";
 import axios from "axios";
 
-const Index = ({ project }) => {
+const Index = () => {
   const router = useRouter()
   const dataFromRouter = router.query
   const { chainId, isWeb3Enabled, account } = useMoralis()
@@ -53,14 +53,6 @@ const Index = ({ project }) => {
       anOwner: account
     },
   })
-
-  const { runContractFunction: getPriceFeed
-  } = useWeb3Contract({
-    abi: contractAbi,
-    contractAddress: helpingHandAddress, // specify the networkId
-    functionName: "getPriceFeed"
-  })
-
 
 
   async function handleAmountSoFar() {
