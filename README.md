@@ -14,7 +14,7 @@ Helping Hand is a decentralized web application that allows users to:
 
 - The front end was built using Next Js and Tailwind CSS
 
-- The smart contract was developed using Solidity, tested compiled and deployed to **Goerli Testnet** with Hardhat
+- The [smart contract](https://github.com/Joshuailuma/Helping-hand-hardhat) was developed using Solidity, tested compiled and deployed to **Goerli Testnet** with Hardhat
 
 - Images are stored on Cloudinary, user data is stored on MongoDb
 
