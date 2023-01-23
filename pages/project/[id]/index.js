@@ -1,9 +1,9 @@
-import { useRouter, useRef } from "next/router"
+import { useRouter, } from "next/router"
 import Image from "next/image"
-import { useMoralis, useWeb3Contract, useWeb3Transfer } from "react-moralis"
+import { useMoralis, useWeb3Contract, } from "react-moralis"
 import contractAbi from "../../../constants/abi.json"
 import { Card, Modal, Input, Typography } from "@web3uikit/core";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef,} from "react";
 import { ethers } from "ethers";
 import { Bell } from '@web3uikit/icons';
 import { useNotification } from '@web3uikit/core';
@@ -22,7 +22,7 @@ const Index = ({project}) => {
     const [amountToDonate, setAmountToDonate] = useState("")
     const [amountSoFar, setAmountSoFar] = useState("")
     const dispatch = useNotification()
-    const donateFormRef = useRef()
+    const formRef = useRef()
 
    useEffect(()=>{
     if(isWeb3Enabled){
@@ -105,7 +105,7 @@ const Index = ({project}) => {
       try{
         tx.wait(1)
       handleDonationNotification(tx)
-      donateFormRef.current.reset(); //Clears the form data
+      formRef.current.reset(); //Clears the form data
 
       } catch(e){
         console.log(e);
@@ -215,7 +215,7 @@ const Index = ({project}) => {
     >
       <Input
       type="number" step=".01" min="0" value="0"
-      ref={donateFormRef}
+      ref={formRef}
       onChange={()=>{
         setAmountToDonate(ethers.utils.parseEther(event.target.value))
       }}

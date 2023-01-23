@@ -13,9 +13,7 @@ dbConnect()
 export default async function Handler(req, res){
     let result
     const {method, query: {id},} = req;
-console.log(method);
     switch (method){
-
         case 'GET':
             try {
                 console.log("Getting details");
@@ -25,9 +23,12 @@ console.log(method);
                 res.status(200).json({success: true, data: project})
                 //Make result to be the project gotten
                 result = project
+                if(result){
+                    return
+                }
             } catch (error) {
                 // Send a response when it cannot get it
-                res.status(400).json({success: false})
+                res.status(400).json({success: false, message: error})
                 result = "Error getting projects"                
             }
             break;
