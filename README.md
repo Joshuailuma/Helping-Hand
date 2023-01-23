@@ -77,3 +77,5 @@ yarn dev
 [Benedicta Ijisesan](https://github.com/cutedicta)
 
 ## License
+
+MIT
