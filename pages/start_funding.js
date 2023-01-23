@@ -237,7 +237,7 @@ const handleNotification =()=>{
 const doNotLeavePage =()=>{
   dispatch({
     type: "info",
-    message: "Please wait for Metamask confirmation, DO NOT LEAVE THIS PAGE",
+    message: "Please wait for confirmation, DO NOT LEAVE THIS PAGE",
     title: "Waiting for confirmation",
     position: "topR",
     icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />

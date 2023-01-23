@@ -3,9 +3,9 @@ import FundProject from '../../models/FundProject'
 var cloudinary = require('cloudinary');
 //This config set up is important
 cloudinary.config({ 
-    cloud_name:  process.env.cloud_name,
-  api_key:  process.env.api_key,
-  api_secret: process.env.api_secret,
+cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
   });
 
 dbConnect()
@@ -18,20 +18,14 @@ console.log(req.query.public_id);
 
         case 'GET':
             try {
-                console.log("Getting projects of that specific account");
                 const project = await FundProject.find(address)
                 res.status(200).json({success: true, data: project})
                 result = project
-                console.log("Result from get request");
-
                 return;
                 //FIX THIS ACCOUNT THING
             } catch(error) {
-                console.log("Sending error");
-                res.status(400).json({success: false})
-                result = "Error getting projects"
-                console.log(error);
-                
+                res.status(400).json({success: false, message: error})
+                result = "Error getting projects"                
             }
             break;
             case 'POST':
@@ -42,7 +36,7 @@ console.log(req.query.public_id);
                 result = project
                 return;
             } catch (error) {
-                res.status(400).json({success: false})
+                res.status(400).json({success: false, message: error})
                 result = "Error posting a project"
                 console.log('Error posting a project');
                 console.log(error);
@@ -87,7 +81,8 @@ console.log(req.query.public_id);
                 } catch (error) {
                     console.log("catch error");
                     console.log(error);
-                    res.status(400).json({success: false, message: "Something wen wrong"})
+                    result = error
+                    res.status(400).json({success: false, message: error})
                 }
                 break;
             default:

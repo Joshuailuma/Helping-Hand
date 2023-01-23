@@ -30,7 +30,7 @@ function My_projects() {
         address: account
       }
     })
-    // console.log(data.data);
+    console.log(data);
     // Result actually looks like this 
     //{
     // success: true,
@@ -43,10 +43,6 @@ function My_projects() {
       setMyProjects(data.data)
     }
   }
-
-
-  console.log(typeof (myProjects));
-  console.log(myProjects);
 
   if (myProjects.length == 0) {
     console.log("hahaha");
