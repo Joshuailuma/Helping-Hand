@@ -1,7 +1,8 @@
 {
-  "name": "navbar-nextjs-tailwindcss",
-  "version": "0.1.0",
+  "name": "Own-Your-Property",
+  "version": "1.0.0",
   "private": true,
+  "description": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
