@@ -13,8 +13,6 @@ const available_projects=({data}) =>{
     </div>)
   }
 
-
-  // Show the circle if fetching
   return (
     <>
     <NavBar/>

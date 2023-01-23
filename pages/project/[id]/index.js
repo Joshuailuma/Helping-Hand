@@ -1,4 +1,4 @@
-import { useRouter } from "next/router"
+import { useRouter, useRef } from "next/router"
 import Image from "next/image"
 import { useMoralis, useWeb3Contract, useWeb3Transfer } from "react-moralis"
 import contractAbi from "../../../constants/abi.json"
@@ -22,6 +22,7 @@ const Index = ({project}) => {
     const [amountToDonate, setAmountToDonate] = useState("")
     const [amountSoFar, setAmountSoFar] = useState("")
     const dispatch = useNotification()
+    const donateFormRef = useRef()
 
    useEffect(()=>{
     if(isWeb3Enabled){
@@ -29,49 +30,62 @@ const Index = ({project}) => {
   }
    }, [isWeb3Enabled])
 
+  /**
+  * Contract fund function to fund the specified project
+  */
     const { runContractFunction: fund, data: dataReturned,
       error,
       isLoading,
       isFetching, } = useWeb3Contract({
       abi: contractAbi,
-      contractAddress: helpingHandAddress, // specify the networkId
+      contractAddress: helpingHandAddress,
       functionName: "fund",
-      msgValue: amountToDonate,
-      params: {receiver: data.address
+      msgValue: amountToDonate, // Amount to fund th contract with
+      params: {receiver: data.address //Address of the contract
     },
     })
 
-    const { runContractFunction: getAmountSoFar, data: getAmountSoFarDataReturned,
+    /**
+   * Contract Function call to get theAmount so far of our funding project 
+   */
+      const { runContractFunction: getAmountSoFar, data: getAmountSoFarDataReturned,
       error: getAmountSoFarError,
      } = useWeb3Contract({
       abi: contractAbi,
-      contractAddress: helpingHandAddress, // specify the networkId
+      contractAddress: helpingHandAddress,
       functionName: "getAmountSoFar",
       params: {anOwner: account
     },
     })
 
-    
+    /**
+ * It calls the contract getAmountSoFar function
+ */
     async function handleAmountSoFar () {
       const result = (await getAmountSoFar());
-      setAmountSoFar(ethers.utils.formatUnits(result))
+      setAmountSoFar(ethers.utils.formatUnits(result)) //We need to convert javascript number to eth =10e18
       //formatEther
       if(!result){
         setAmountSoFar("No data")
       }
     }
 
+    /**
+ * When the donate button is clicked, show modal
+ */
     const handleDonateClick = async()=>{
-      if(isWeb3Enabled){
+      if(isWeb3Enabled){ // First check if wallet is connected
         setShowModal(true)
       } else{
-        handleWalletNotConnected()
+        handleWalletNotConnected() //Show notification
       }
     }
 
+    /**
+ * To donate by calling the contract fund function
+ */
     const donate =async()=>{
       setShowModal(false)
-      setAmountToDonate("")
       if(isWeb3Enabled){
         const dataReturned = await fund({
           onSuccess: handleDonationSuccess,
@@ -84,16 +98,23 @@ const Index = ({project}) => {
       }
     }
 
+    /**
+ * When the donation is successful
+ */
     const handleDonationSuccess = async(tx)=>{
       try{
         tx.wait(1)
       handleDonationNotification(tx)
+      donateFormRef.current.reset(); //Clears the form data
+
       } catch(e){
         console.log(e);
       }     
     }
 
-   
+   /**
+ * Show the success notification
+ */
     const handleDonationNotification =()=>{
       dispatch({
         type: "success",
@@ -104,6 +125,10 @@ const Index = ({project}) => {
       })
     }
 
+    /**
+     * how the donation failure notification
+     * @param {errorMessage} e 
+     */
     const handleDonationFailure =(e)=>{
       dispatch({
         type: "error",
@@ -113,7 +138,9 @@ const Index = ({project}) => {
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     }
-
+    /**
+     * Notification when wallet is not connected
+     */
     const handleWalletNotConnected = ()=>{
       dispatch({
         type: "error",
@@ -188,6 +215,7 @@ const Index = ({project}) => {
     >
       <Input
       type="number" step=".01" min="0" value="0"
+      ref={donateFormRef}
       onChange={()=>{
         setAmountToDonate(ethers.utils.parseEther(event.target.value))
       }}

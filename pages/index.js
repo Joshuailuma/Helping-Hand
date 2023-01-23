@@ -6,23 +6,7 @@ import { useWeb3Contract } from 'react-moralis';
 import Image from 'next/image'
 import Footer from '../components/Footer'
 
-
 export default function Home() {
-
-  const {chainId: chainIdHex, isWeb3Enabled, account} = useMoralis()
-  const realChainId = parseInt(chainIdHex)
-  const helpingHandAddress = realChainId in contractAddress ? contractAddress[realChainId][0]: null
-
-
-  // Call a view function
-  const { runContractFunction: getOwner } = useWeb3Contract({
-    abi: abi,
-    contractAddress: helpingHandAddress, // specify the networkId
-    functionName: "getOwner",
-    params: {
-      // newowner: account
-    },
-})
 
   return (
     <div className={"bg-lightBlack mt-16 md:mt-28"}>
@@ -244,22 +228,11 @@ export default function Home() {
           <h5 className="text-lg text-white font-bold"> Get satisfaction</h5>
           </div>
         </div>
-
-        {/* Button */}
-        {/* <div className="my-16">
-        <button
-        onClick={runTheContract}
-                        
-                        className="  p-3 px-6 pt-2 text-white bg-brightBlue rounded-full baseline hover:bg-brightBlueLight "
-          >Get Started</button>
-        </div> */}
         </div>
       </section>
 
-
       {/* Footer */}
       <Footer/>
-     
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import Image from "next/image"
 import { useMoralis, useWeb3Contract, useWeb3Transfer } from "react-moralis"
 import contractAbi from "../../../constants/abi.json"
-import { Card, Modal, Input, Typography } from "@web3uikit/core";
+import { Card } from "@web3uikit/core";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Bell } from '@web3uikit/icons';
@@ -15,12 +15,12 @@ import axios from "axios";
 
 const Index = () => {
   const router = useRouter()
-  const dataFromRouter = router.query
-  const { chainId, isWeb3Enabled, account } = useMoralis()
+  const dataFromRouter = router.query //Data from the previous screen
+  const { chainId, isWeb3Enabled, account } = useMoralis() // Helps us interact with blockchain from frontend
   const chainString = chainId ? parseInt(chainId).toString() : "31337"
   const helpingHandAddress = networkMapping[chainString][0]
   const [amountSoFar, setAmountSoFar] = useState("")
-  const dispatch = useNotification()
+  const dispatch = useNotification() //For notification
   const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
@@ -29,35 +29,42 @@ const Index = () => {
     }
   }, [isWeb3Enabled])
 
-
+  /**
+   * Contract Function call to withdraw from the contract 
+   */
   const { runContractFunction: withdraw, data: withdrawDataReturned,
     error: withdrawError,
     isLoading: withdrawIsLoading,
     isFetching: withdrawIsFetching,
   } = useWeb3Contract({
     abi: contractAbi,
-    contractAddress: helpingHandAddress, // specify the networkId
-    functionName: "withdraw",
+    contractAddress: helpingHandAddress,
+    functionName: "withdraw", //The function name in the contract
     params: {
-      receiver: dataFromRouter.address
+      receiver: dataFromRouter.address // We are passing address as a parameter to the contract
     },
   })
 
+  /**
+   * Contract Function call to get theAmount so far of our funding project 
+   */
   const { runContractFunction: getAmountSoFar, data: getAmountSoFarDataReturned,
     error: getAmountSoFarError,
   } = useWeb3Contract({
     abi: contractAbi,
-    contractAddress: helpingHandAddress, // specify the networkId
+    contractAddress: helpingHandAddress,
     functionName: "getAmountSoFar",
     params: {
-      anOwner: account
+      anOwner: account //We are passing our account as a parameter
     },
   })
 
-
+/**
+ * It calls the contract getAmountSoFar function
+ */
   async function handleAmountSoFar() {
     const result = (await getAmountSoFar());
-    setAmountSoFar(ethers.utils.formatUnits(result))
+    setAmountSoFar(ethers.utils.formatUnits(result)) //We need to convert javascript number to eth =10e18
     //formatEther
     if (!result) {
       setAmountSoFar("No data")
@@ -65,29 +72,37 @@ const Index = () => {
   }
 
 
-  // To withhdraw funds
+  /**
+ * It calls the contract withdraw function.
+ */
   const handleWithdrawClick = async () => {
+    // First check if wallet is connected
     if (isWeb3Enabled) {
       const result = await withdraw({
-        onSuccess: handleWithdrawSuccess,
+        onSuccess: handleWithdrawSuccess, // Call this fuction if successful
         onError: (error) => {
-          handleWithdrawFailure(error)
+          handleWithdrawFailure(error) // If error call the function and pass in the error message
         }
       })
     } else {
       handleWalletNotConnected()
     }
   }
-
+  /**
+   * If withdraw is successful show a notification
+   * @param {transaction} tx 
+   */
   const handleWithdrawSuccess = async (tx) => {
     try {
       tx.wait(1)
-      handleWithdrawNotification(tx)
+      handleWithdrawNotification(tx) // Success notification
     } catch (e) {
       console.log(e);
     }
   }
-
+  /**
+   * Successful withdrawal notification
+   */
   const handleWithdrawNotification = () => {
     dispatch({
       type: "success",
@@ -98,6 +113,10 @@ const Index = () => {
     })
   }
 
+  /**
+   * Failed withdraw notification
+   * @param {errorMessage} e 
+   */
   const handleWithdrawFailure = (e) => {
     dispatch({
       type: "error",
@@ -108,7 +127,9 @@ const Index = () => {
     })
   }
 
-
+  /**
+   * Notification when wallet is not connected
+   */
   const handleWalletNotConnected = () => {
     dispatch({
       type: "error",
@@ -119,19 +140,23 @@ const Index = () => {
     })
   }
 
-
+  /**
+   * When delete button is clicked, call the Api
+   */
   async function handleDeleteClick() {
     setIsDeleting(true)
     //Use http://localhost:3000 for dev server
     // https://helping-hand-pi.vercel.app
     const { data } = await axios.delete("https://helping-hand-pi.vercel.app/api/myProjectsApi", {
       params: {
-        public_id: dataFromRouter.public_id,
+        public_id: dataFromRouter.public_id, //Parameters to pass to the api
         id: dataFromRouter._id,
       }
     })
 
+    // If the message from the data returned contains "Project deleted"..
     if (data.message == "Project deleted") {
+      // Show success notification
       dispatch({
         type: "success",
         message: "Project deleted.",
@@ -139,8 +164,9 @@ const Index = () => {
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
-      router.push('/');
+      router.push('/'); //Go to the home screen
     } else {
+      // Show failure notification
       dispatch({
         type: "error",
         message: "Failed to delete project",
@@ -148,10 +174,9 @@ const Index = () => {
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
-
     }
+    // Set isDeleting to false. to stop the spinner
     setIsDeleting(false)
-    // console.log(result);
   }
 
   /*
@@ -214,12 +239,10 @@ const Index = () => {
 
           {/* Image item */}
           <div className={"md:w-1/4"}>
-
             <h1 className={"text-lg	my-11 text-slate-200"}> <Ada fontSize="50px" />
               You can withdraw your funds if the end time is over</h1>
             <h1 className={"text-lg	text-slate-200"}> <AtomicApi fontSize="50px" />
               Click the delete button to delete the project</h1>
-
           </div>
         </div>
       </section>

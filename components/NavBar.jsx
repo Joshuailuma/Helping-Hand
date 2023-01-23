@@ -70,7 +70,6 @@ function NavBar() {
                 <li>
                   <div className="flex justify-center py-2">
                   <ConnectButton/>
-
                   </div>
                 </li>
               </ul>

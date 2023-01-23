@@ -21,8 +21,10 @@ function My_projects() {
     fetchData();
   }, [account])
 
-  async function fetchData() {
-    // console.log(account);
+    /**
+     * Call the API to fetch data
+     */
+    async function fetchData() {
     //Use http://localhost:3000 for dev server
     // https://helping-hand-pi.vercel.app
     let { data } = await axios.get("http://localhost:3000/api/myProjectsApi", {
@@ -30,15 +32,7 @@ function My_projects() {
         address: account
       }
     })
-    console.log(data);
-    // Result actually looks like this 
-    //{
-    // success: true,
-    // data: [
-    //   {
-    // _id: '63be7d843bec7be02874d028',
-    // title: 'For internally displaced persons',
-    //   }]}
+
     if (data) {
       setMyProjects(data.data)
     }

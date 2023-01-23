@@ -47,7 +47,7 @@ export default async function Handler(req, res) {
                     try {
                         const deletedProject = await FundProject.deleteOne({id_: id})
                         
-                        //If that note doesnt exist
+                        //If that doesnt exist
                         if (!deletedProject){
                             res.status(400).json({success: false})
                         }
