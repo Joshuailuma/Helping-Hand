@@ -6,17 +6,20 @@ import { Bell } from '@web3uikit/icons';
 
 function Footer() {
   const [message, setMessage] = useState("")
-  const dispatch = useNotification()
+  const dispatch = useNotification() //For notification
   const formRef = useRef()
 
-
+/**
+ * Sends a message when it is called
+ * @param {*} event
+ */
   async function handleSubmit(e) {
   e.preventDefault();
-  formRef.current.reset();
+  formRef.current.reset(); //Clears the form data
 
   let {status} = await axios.post("/api/contact", {
     message: message,
-  })
+  }) // Sends a post request
   if(status == "200"){
     dispatch({
       type: "success",

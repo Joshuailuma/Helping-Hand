@@ -276,7 +276,7 @@ return (
         <h1 className="text-4xl  text-white font-bold md:text-5xl"> Start Funding</h1>
         <p className="text-2xl mt-6 text-darkGrayishBlue">
             </p>     
-            <form action=""  onSubmit={handleOnFormSubmit} className={"mt-6"}>
+            <form onSubmit={handleOnFormSubmit} ref={formRef} className={"mt-6"}>
               <div className=" flex flex-col space-y-6">             
              {/* Name */}
 
