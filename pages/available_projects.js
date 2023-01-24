@@ -32,7 +32,7 @@ const available_projects=({data}) =>{
 <Card className={"justify-center items-center content-center align-middle text-center bg-black"}
     title={i.title}
   >
-    <div >
+    <div className={"flex justify-center items-center content-center align-middle text-center"}>
       <Image 
       loader={() => i.imageUrl}
         height={180}

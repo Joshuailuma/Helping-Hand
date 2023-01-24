@@ -212,7 +212,7 @@ const handleStartProjectSuccess = async(tx)=>{
 const handleNotification =()=>{
   dispatch({
     type: "success",
-    message: "You may now wait for confirmation from Metamask or wallet provider",
+    message: "You may now leave the page or wait for confirmation from Metamask or Wallet provider, this may take more than 2mins",
     title: "Project creation succesfull",
     position: "topR",
     icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
