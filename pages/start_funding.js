@@ -8,11 +8,12 @@ import { useNotification } from '@web3uikit/core';
 import { Bell } from '@web3uikit/icons';
 import NavBar from '../components/NavBar';
 import Image from 'next/image';
+import { ethers } from 'ethers';
 
 function Start_funding() {
   const router = useRouter()
 
-const [form, setForm] = useState({title: '', description: '', imageUrl: '', address: '', endTime: '', public_id: ''})
+const [form, setForm] = useState({title: '', description: '', imageUrl: '', address: '', endTime: '1', public_id: ''})
 const [imageSrc, setImageSrc] = useState();
 const [uploading, setUploading] = useState(false);
 const [isFile, setIsFile] = useState(false);
@@ -211,8 +212,8 @@ const handleStartProjectSuccess = async(tx)=>{
 const handleNotification =()=>{
   dispatch({
     type: "success",
-    message: "Project creation succesfull",
-    title: "Transaction Notification",
+    message: "You may now wait for confirmation from Metamask or wallet provider",
+    title: "Project creation succesfull",
     position: "topR",
     icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
   })
@@ -255,7 +256,7 @@ const { runContractFunction: startProject, data: dataReturned,
   contractAddress: helpingHandAddress, // specify the networkId
   functionName: "startProject",
   params: {newowner: account,
-    endTime: form.endTime
+    endTime: ethers.utils.parseEther(form.endTime)
   },
 })
 

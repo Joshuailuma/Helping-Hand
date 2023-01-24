@@ -78,16 +78,38 @@ const Index = () => {
   const handleWithdrawClick = async () => {
     // First check if wallet is connected
     if (isWeb3Enabled) {
-      const result = await withdraw({
-        onSuccess: handleWithdrawSuccess, // Call this fuction if successful
-        onError: (error) => {
-          handleWithdrawFailure(error) // If error call the function and pass in the error message
+      const currentDate = new Date() //The date we have right now
+      //date is our due date in the default format
+      if(currentDate > date){
+        const contractInteraction = await withdraw({
+          onSuccess: handlePleaseWait, // Call this fuction if successful
+          onError: (error) => {
+            handleWithdrawFailure(error)
+            return; // If error call the function and pass in the error message
+          }
+        })
+
+        // If there is a result from interacting with the contract
+        if(contractInteraction){
+          // Waiting for the transaction to be confirmed
+          const transactionResult = await contractInteraction.wait()
+          //If transcation has been confirmed
+          if(transactionResult){
+            handleWithdrawSuccess()
+          }
         }
-      })
+        
+      } else{
+        // If time has not yet elapsed to withdraw
+        handleTimeNotElapsed()
+
+      }
     } else {
+      //If wallet is not connected
       handleWalletNotConnected()
     }
   }
+
   /**
    * If withdraw is successful show a notification
    * @param {transaction} tx 
@@ -122,6 +144,32 @@ const Index = () => {
       type: "error",
       message: `Withdraw failed ${e.message}`,
       title: "Transaction Notification",
+      position: "topR",
+      icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+    })
+  }
+
+  /**
+   * Notification: Not yet time to withdraw
+   */
+  const handleTimeNotElapsed = () => {
+    dispatch({
+      type: "error",
+      message: `You can only withdraw after ${dueDate}`,
+      title: "You can't withdraw right now",
+      position: "topR",
+      icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+    })
+  }
+
+   /**
+     * Notification asking the user to wait
+     */
+   const handlePleaseWait =()=>{
+    dispatch({
+      type: "info",
+      message: `Wait for confirmation...`,
+      title: "Please wait",
       position: "topR",
       icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
     })
@@ -186,9 +234,9 @@ const Index = () => {
   const date = new Date(dataFromRouter.createdAt)
   // Get end time from router
   const endTime = parseInt(dataFromRouter.endTime) //Convert it from string to int
-  // Add the endTime value to the previous date
+  // Add the endTime value to the previous date/setting the date to a new value
   date.setDate(date.getDate() + endTime); // Add the date
-
+  // Making it readable
   const dueDate = date.toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
 
   return (

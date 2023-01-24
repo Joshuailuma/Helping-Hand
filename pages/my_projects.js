@@ -39,7 +39,6 @@ function My_projects() {
   }
 
   if (myProjects.length == 0) {
-    console.log("hahaha");
     return (<div className={"flex text-white my-56 justify-center align-center"}>
       <NavBar />
       <h1 className={"text-2xl"}> No project present</h1>

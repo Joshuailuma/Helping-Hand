@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useMoralis, useWeb3Contract, } from "react-moralis"
 import contractAbi from "../../../constants/abi.json"
 import { Card, Modal, Input, Typography } from "@web3uikit/core";
-import { useEffect, useState, useRef,} from "react";
+import { useEffect, useState,} from "react";
 import { ethers } from "ethers";
 import { Bell } from '@web3uikit/icons';
 import { useNotification } from '@web3uikit/core';
@@ -22,7 +22,6 @@ const Index = ({project}) => {
     const [amountToDonate, setAmountToDonate] = useState("")
     const [amountSoFar, setAmountSoFar] = useState("")
     const dispatch = useNotification()
-    const formRef = useRef()
 
    useEffect(()=>{
     if(isWeb3Enabled){
@@ -87,11 +86,20 @@ const Index = ({project}) => {
     const donate =async()=>{
       setShowModal(false)
       if(isWeb3Enabled){
-        const dataReturned = await fund({
-          onSuccess: handleDonationSuccess,
+        const contractInteraction = await fund({
+          onSuccess: handlePleaseWait,
           onError: (error)=>{handleDonationFailure(error)
           }
         })
+
+        // If the contract interaction has a result
+        if(contractInteraction){
+          // Wait for block confirmation
+          const transactionReceipt = await contractInteraction.wait()
+           if(transactionReceipt){
+             handleDonationSuccess() // Show notification
+           }
+        }
         
       } else{
         handleWalletNotConnected()
@@ -99,23 +107,10 @@ const Index = ({project}) => {
     }
 
     /**
- * When the donation is successful
- */
-    const handleDonationSuccess = async(tx)=>{
-      try{
-        tx.wait(1)
-      handleDonationNotification(tx)
-      formRef.current.reset(); //Clears the form data
-
-      } catch(e){
-        console.log(e);
-      }     
-    }
-
-   /**
  * Show the success notification
  */
-    const handleDonationNotification =()=>{
+    const handleDonationSuccess = async()=>{
+      try{
       dispatch({
         type: "success",
         message: "Donation successful",
@@ -123,7 +118,12 @@ const Index = ({project}) => {
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
+
+      } catch(e){
+        console.log(e);
+      }     
     }
+
 
     /**
      * how the donation failure notification
@@ -134,6 +134,18 @@ const Index = ({project}) => {
         type: "error",
         message: `Donation failed ${e.message}`,
         title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+    /**
+     * Notification asking the user to wait
+     */
+    const handlePleaseWait =()=>{
+      dispatch({
+        type: "info",
+        message: `Wait for confirmation...`,
+        title: "Please wait",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -215,7 +227,6 @@ const Index = ({project}) => {
     >
       <Input
       type="number" step=".01" min="0" value="0"
-      ref={formRef}
       onChange={()=>{
         setAmountToDonate(ethers.utils.parseEther(event.target.value))
       }}
