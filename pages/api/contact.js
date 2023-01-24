@@ -1,5 +1,6 @@
 import { mailOptions, transporter } from "../../utils/nodemailer";
 
+// This enables email message to be sent in the contact form in homepage
 export default async function Handler(req, res){
     if(req.method === "POST"){
         const {message} = req.body;
@@ -8,8 +9,7 @@ export default async function Handler(req, res){
             await transporter.sendMail({
                 ...mailOptions,
                 subject: "From Helping Hand",
-                html: `<p>${message}</p>`
-                
+                html: `<p>${message}</p>`                
             })
             res.status(200).json({success: true})
         } catch(e){

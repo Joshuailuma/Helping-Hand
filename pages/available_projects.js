@@ -13,8 +13,6 @@ const available_projects=({data}) =>{
     </div>)
   }
 
-
-  // Show the circle if fetching
   return (
     <>
     <NavBar/>
@@ -24,10 +22,10 @@ const available_projects=({data}) =>{
     </div>
     <div className={"bg-lightBlack text-white grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4 pt-14 px-8"}>
 
-    {!data ? ( 
+    {data.length == 0 ? ( 
       <div className={"pt-48"}>No Project right now...</div>
         ):( data.map((i) => {
-      console.log(i.imageUrl);
+
       return(
         <div key={i._id}>
         <Link href={{pathname: `/project/${i._id}`, query: i}}>
@@ -36,6 +34,7 @@ const available_projects=({data}) =>{
   >
     <div >
       <Image 
+      loader={() => i.imageUrl}
         height={180}
         src={i.imageUrl}
         width={180}
@@ -44,11 +43,8 @@ const available_projects=({data}) =>{
     </div>
   </Card>
 </Link>
-        </div>
-    )
-}
-))
-}
+</div>
+)}))}
 
 </div>
     </>

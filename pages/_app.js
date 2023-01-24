@@ -8,7 +8,7 @@ import NavBar from '../components/NavBar';
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = React.useState(false);
-  
+  // To show the spinner when component is not yet mounted
   React.useEffect(() => {
     const start = () => {
       //"start"
@@ -48,19 +48,16 @@ function MyApp({ Component, pageProps }) {
       </div>
       <div className={"flex mt-6 justify-center align-center text-white font-serif ml-4"}>Please wait or refresh after a long time</div>
       </>
-       </NotificationProvider>   
-     </MoralisProvider>
-        
+      </NotificationProvider>   
+      </MoralisProvider>      
       ) : (
         <MoralisProvider initializeOnMount={false}>
     <NotificationProvider>
     <Component {...pageProps}/>
     </NotificationProvider>
-
   </MoralisProvider>
       )}
-    </>
-  
+    </>  
   )
 }
 

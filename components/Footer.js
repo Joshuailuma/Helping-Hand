@@ -6,18 +6,22 @@ import { Bell } from '@web3uikit/icons';
 
 function Footer() {
   const [message, setMessage] = useState("")
-  const dispatch = useNotification()
+  const dispatch = useNotification() //For notification
   const formRef = useRef()
 
-
+/**
+ * Sends a message when it is called
+ * @param {*} event
+ */
   async function handleSubmit(e) {
   e.preventDefault();
-  formRef.current.reset();
+  formRef.current.reset(); //Clears the form data
 
   let {status} = await axios.post("/api/contact", {
     message: message,
-  })
+  }) // Sends a post request
   if(status == "200"){
+    // Send a notification containing this details
     dispatch({
       type: "success",
       message: `Message successfully sent`,
@@ -26,7 +30,8 @@ function Footer() {
       icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
     })
   } else{
-     dispatch({
+    // Send a notification containing this details
+    dispatch({
     type: "error",
     message: `Couldn't send message`,
     title: "Notification",
@@ -44,9 +49,7 @@ function Footer() {
 
         <div className="mx-auto my-6 text-center text-white md:hidden">
         Copyright &copy; Grandida LLC 2023. All rights reserved
-        </div>
-        
-       
+        </div>      
       </div>
 
       {/* List container */}
@@ -56,7 +59,6 @@ function Footer() {
           <Link href="/available_projects" className='hover:text-brightRed'>Available projects</Link>
           <Link href="/about" className='hover:text-brightRed'>About us</Link>
         </div>
-
       </div>
 
       {/* Input container */}
@@ -70,12 +72,10 @@ function Footer() {
             Send
             </button>
           </div>
-        </form>
-        
+        </form>        
       </div>
     </div>
   </footer>
-
   )
 }
 

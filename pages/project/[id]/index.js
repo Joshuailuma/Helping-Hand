@@ -1,9 +1,9 @@
-import { useRouter } from "next/router"
+import { useRouter, } from "next/router"
 import Image from "next/image"
-import { useMoralis, useWeb3Contract, useWeb3Transfer } from "react-moralis"
+import { useMoralis, useWeb3Contract, } from "react-moralis"
 import contractAbi from "../../../constants/abi.json"
 import { Card, Modal, Input, Typography } from "@web3uikit/core";
-import { useEffect, useState } from "react";
+import { useEffect, useState,} from "react";
 import { ethers } from "ethers";
 import { Bell } from '@web3uikit/icons';
 import { useNotification } from '@web3uikit/core';
@@ -29,72 +29,88 @@ const Index = ({project}) => {
   }
    }, [isWeb3Enabled])
 
+  /**
+  * Contract fund function to fund the specified project
+  */
     const { runContractFunction: fund, data: dataReturned,
       error,
       isLoading,
       isFetching, } = useWeb3Contract({
       abi: contractAbi,
-      contractAddress: helpingHandAddress, // specify the networkId
+      contractAddress: helpingHandAddress,
       functionName: "fund",
-      msgValue: amountToDonate,
-      params: {receiver: data.address
+      msgValue: amountToDonate, // Amount to fund th contract with
+      params: {receiver: data.address //Address of the contract
     },
     })
 
-    const { runContractFunction: getAmountSoFar, data: getAmountSoFarDataReturned,
+    /**
+   * Contract Function call to get theAmount so far of our funding project 
+   */
+      const { runContractFunction: getAmountSoFar, data: getAmountSoFarDataReturned,
       error: getAmountSoFarError,
      } = useWeb3Contract({
       abi: contractAbi,
-      contractAddress: helpingHandAddress, // specify the networkId
+      contractAddress: helpingHandAddress,
       functionName: "getAmountSoFar",
       params: {anOwner: account
     },
     })
 
-    
+    /**
+ * It calls the contract getAmountSoFar function
+ */
     async function handleAmountSoFar () {
       const result = (await getAmountSoFar());
-      setAmountSoFar(ethers.utils.formatUnits(result))
+      setAmountSoFar(ethers.utils.formatUnits(result)) //We need to convert javascript number to eth =10e18
       //formatEther
       if(!result){
         setAmountSoFar("No data")
       }
     }
 
+    /**
+ * When the donate button is clicked, show modal
+ */
     const handleDonateClick = async()=>{
-      if(isWeb3Enabled){
+      if(isWeb3Enabled){ // First check if wallet is connected
         setShowModal(true)
       } else{
-        handleWalletNotConnected()
+        handleWalletNotConnected() //Show notification
       }
     }
 
+    /**
+ * To donate by calling the contract fund function
+ */
     const donate =async()=>{
       setShowModal(false)
-      setAmountToDonate("")
       if(isWeb3Enabled){
-        const dataReturned = await fund({
-          onSuccess: handleDonationSuccess,
+        const contractInteraction = await fund({
+          onSuccess: handlePleaseWait,
           onError: (error)=>{handleDonationFailure(error)
           }
         })
+
+        // If the contract interaction has a result
+        if(contractInteraction){
+          // Wait for block confirmation
+          const transactionReceipt = await contractInteraction.wait()
+           if(transactionReceipt){
+             handleDonationSuccess() // Show notification
+           }
+        }
         
       } else{
         handleWalletNotConnected()
       }
     }
 
-    const handleDonationSuccess = async(tx)=>{
+    /**
+ * Show the success notification
+ */
+    const handleDonationSuccess = async()=>{
       try{
-        tx.wait(1)
-      handleDonationNotification(tx)
-      } catch(e){
-        console.log(e);
-      }     
-    }
-
-   
-    const handleDonationNotification =()=>{
       dispatch({
         type: "success",
         message: "Donation successful",
@@ -102,8 +118,17 @@ const Index = ({project}) => {
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
+
+      } catch(e){
+        console.log(e);
+      }     
     }
 
+
+    /**
+     * how the donation failure notification
+     * @param {errorMessage} e 
+     */
     const handleDonationFailure =(e)=>{
       dispatch({
         type: "error",
@@ -113,7 +138,21 @@ const Index = ({project}) => {
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     }
-
+    /**
+     * Notification asking the user to wait
+     */
+    const handlePleaseWait =()=>{
+      dispatch({
+        type: "info",
+        message: `Wait for confirmation...`,
+        title: "Please wait",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+    /**
+     * Notification when wallet is not connected
+     */
     const handleWalletNotConnected = ()=>{
       dispatch({
         type: "error",
