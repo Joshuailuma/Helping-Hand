@@ -78,7 +78,7 @@ function My_projects() {
 
           <div className={"bg-lightBlack text-white grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4 pt-14 px-8"}>
             {isWeb3Enabled ? (!myProjects ? (
-              <div className={"pt-48"}>No Projects right now...</div>
+              <div className={"pt-48"}>No Project right now...</div>
             ) : (
               myProjects.map((i) => {
                 // A full project card
@@ -93,7 +93,7 @@ function My_projects() {
                       <Card className={"justify-center bg-black"}
                         title={i.title}
                       >
-                        <div >
+                        <div className={"flex justify-center items-center content-center align-middle text-center"}>
                           <Image
                             height={180}
                             src={i.imageUrl}
