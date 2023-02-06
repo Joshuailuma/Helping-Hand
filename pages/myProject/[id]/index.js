@@ -24,7 +24,7 @@ const Index = () => {
   const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
-    if (isWeb3Enabled) {
+    if (isWeb3Enabled && (chainId == 5)) {
       handleAmountSoFar()
     }
   }, [isWeb3Enabled])
@@ -77,7 +77,7 @@ const Index = () => {
  */
   const handleWithdrawClick = async () => {
     // First check if wallet is connected
-    if (isWeb3Enabled) {
+    if (isWeb3Enabled && (chainId == 5)) {
       const currentDate = new Date() //The date we have right now
       //date is our due date in the default format
       if(currentDate > date){
@@ -181,7 +181,7 @@ const Index = () => {
   const handleWalletNotConnected = () => {
     dispatch({
       type: "error",
-      message: "Please connect wallet",
+      message: "Please connect wallet to Goerli Network",
       title: "No wallet",
       position: "topR",
       icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
