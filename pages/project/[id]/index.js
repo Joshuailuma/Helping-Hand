@@ -24,7 +24,7 @@ const Index = ({project}) => {
     const dispatch = useNotification()
 
    useEffect(()=>{
-    if(isWeb3Enabled && (chainId == 5)){
+    if(isWeb3Enabled){
     handleAmountSoFar()
   }
    }, [isWeb3Enabled])
@@ -73,7 +73,7 @@ const Index = ({project}) => {
  * When the donate button is clicked, show modal
  */
     const handleDonateClick = async()=>{
-      if(isWeb3Enabled && (chainId == 5)){ // First check if wallet is connected
+      if(isWeb3Enabled){ // First check if wallet is connected
         setShowModal(true)
       } else{
         handleWalletNotConnected() //Show notification
@@ -85,7 +85,7 @@ const Index = ({project}) => {
  */
     const donate =async()=>{
       setShowModal(false)
-      if(isWeb3Enabled && (chainId == 5)){
+      if(isWeb3Enabled){
         const contractInteraction = await fund({
           onSuccess: handlePleaseWait,
           onError: (error)=>{handleDonationFailure(error)
@@ -156,7 +156,7 @@ const Index = ({project}) => {
     const handleWalletNotConnected = ()=>{
       dispatch({
         type: "error",
-        message: "Please connect wallet to Goerli Network",
+        message: "Please connect wallet",
         title: "No wallet",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
