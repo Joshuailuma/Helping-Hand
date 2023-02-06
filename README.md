@@ -1,4 +1,4 @@
-# Helping Hand
+# Helping Hand on Goerli Network
 
 ## Overview
 
