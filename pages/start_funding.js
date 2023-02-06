@@ -151,7 +151,7 @@ const handleChange = (e) => {
 const createProject = async()=>{
   let result
 
-  if (isWeb3Enabled){
+  if (isWeb3Enabled && (chainId == 5)){
     try {
       // Call the contract function
         const resultFromBlockchain = await startProject({
@@ -186,7 +186,7 @@ const createProject = async()=>{
 const handleWalletNotConnected = ()=>{
   dispatch({
     type: "error",
-    message: "Please connect wallet",
+    message: "Please connect wallet to Goerli Network",
     title: "No wallet",
     position: "topR",
     icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
