@@ -3,35 +3,21 @@ import Image from 'next/image'
 import axios from "axios";
 import Link from 'next/link';
 import { Circles } from "react-loader-spinner";
-import { Card, useNotification } from '@web3uikit/core';
+import { Card } from '@web3uikit/core';
 import NavBar from '../components/NavBar';
 import { useMoralis } from 'react-moralis';
 import { useRouter } from 'next/router';
-import { Bell } from '@web3uikit/icons';
 
 function My_projects() {
   const [loading, setLoading] = useState(true)
   const [myProjects, setMyProjects] = useState([])
 
-  const { isWeb3Enabled, account, chainId } = useMoralis()
-  // For Notification
-  const dispatch = useNotification()
-
+  const { isWeb3Enabled, account } = useMoralis()
   const router = useRouter()
   const data = router.query
   // Set data to false to render the data page
   useEffect(() => {
     setLoading(false)
-    if(isWeb3Enabled && (chainId !== '5')){
-      //Please connect to Goerli Network
-      dispatch({
-        type: "info",
-        message: "Please connect to Goerli Network",
-        title: "Change Network to Goerli",
-        position: "topR",
-        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
-      })
-    }
     fetchData();
   }, [account])
 
@@ -91,7 +77,7 @@ function My_projects() {
           </div>
 
           <div className={"bg-lightBlack text-white grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4 pt-14 px-8"}>
-            {isWeb3Enabled && (chainId == '5') ? (!myProjects ? (
+            {isWeb3Enabled ? (!myProjects ? (
               <div className={"pt-48"}>No Project right now...</div>
             ) : (
               myProjects.map((i) => {
@@ -122,7 +108,7 @@ function My_projects() {
               }
               ))
             ) : (
-              <div className={"pt-52"}>Please connect your Wallet to Goerli Network</div>
+              <div className={"pt-52"}>Web3 Currently Not Enabled</div>
             )
             }
 
