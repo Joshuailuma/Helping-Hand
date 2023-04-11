@@ -72,10 +72,6 @@ yarn dev
 
 ![screenshot3](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot3.png?raw=true)
 
-## Contributor
-
-[Benedicta Ijisesan](https://github.com/cutedicta)
-
 ## License
 
 MIT
